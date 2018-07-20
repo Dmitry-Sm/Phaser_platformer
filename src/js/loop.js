@@ -16,7 +16,6 @@ let w = window.innerWidth,
 
 function create () {
 
-
   display = this.add.zone(w/2, h/2, w - 10, h - 10)
 
   background = this.add.tileSprite(0, 0, w, h, 'background')
