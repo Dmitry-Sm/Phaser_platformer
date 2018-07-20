@@ -5,8 +5,14 @@ class Player {
     this.min_speed = 20
     this.max_speed = 400
     this.speed = 200
+    this.jump_height = 650
   }
 
+  jump() {
+    if (this.sprite.body.blocked.down) {
+      this.sprite.body.velocity.y = -this.jump_height
+    }
+  }
 
 }
 

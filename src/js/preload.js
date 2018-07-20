@@ -20,6 +20,7 @@ function preload () {
   this.load.image('ground_1', 'game/ground_1.png')
   this.load.image('ground_2', 'game/ground_2.png')
   this.load.image('ground_3', 'game/ground_3.png')
+  this.load.image('ground_long', 'game/ground_long.png')
   this.load.image('heart', 'game/heart.png')
   this.load.image('light', 'game/light.png')
   this.load.image('power', 'game/power.png')
