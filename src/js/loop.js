@@ -34,7 +34,7 @@ function create () {
 
   player = new Player({
     type: 'men',
-    sprite: this.physics.add.sprite(200, 400, 'man_run', 14).setScale(0.3, 0.3)
+    sprite: this.physics.add.sprite(200, 400, 'man_run', 13).setScale(0.3, 0.3)
   })
 
   player.sprite.anims.play('run')
@@ -54,15 +54,59 @@ function create () {
   let platform_types = [
     {
       name: 'ground_1',
-      width: 202
+      width: 202,
+      height: 193,
+      scale: 0.3
     },
     {
       name: 'ground_2',
-      width: 202
+      width: 202,
+      height: 193,
+      scale: 0.3
     },
     {
       name: 'ground_3',
-      width: 148
+      width: 148,
+      height: 193,
+      scale: 0.3
+    }
+  ]
+
+  let platform_areas = [
+    {
+      type: 'easy plat 1',
+      bonus_num: 1,
+      array: [
+        {
+          type: 'block',
+          block: 1,
+          bonus: false
+        },
+        {
+          type: 'block',
+          block: 1,
+          bonus: false
+        },
+        {
+          type: 'block',
+          block: 2,
+          bonus: false
+        },
+        {
+          type: 'space',
+          width: 120
+        },
+        {
+          type: 'block',
+          block: 0,
+          bonus: true
+        },
+        {
+          type: 'block',
+          block: 2,
+          bonus: false
+        }
+      ]
     }
   ]
 
@@ -77,23 +121,40 @@ function create () {
     path.length += platform_types[type].width
   }
 
-  addPlatform(1)
-  addPlatform(0)
-  path.length += 0
-  addPlatform(1)
-  addPlatform(2)
-  addPlatform(1)
-
-  for (let i = 3; i < 24; i++) {
-    let rnd = Math.floor(Math.random()*3)
-    
-    addPlatform(rnd)
-    path.length += 70*Math.floor(Math.random()*3)
-    // let p = platforms.create(i*243 + Math.floor(Math.random()*0)*100, h, 'ground_' + rnd)
-    // p.setScale(0.3, 0.3).setOrigin(0, 1).refreshBody()
+  const addBonus = (x, y) => {
+    // platforms.create(x, y, 'power').setOrigin(0, 1).setScale(0.3, 0.2).refreshBody()
   }
 
-console.log(player);
+  const addArea = (type) => {
+    for (let p of platform_areas[type].array) {
+      if (p.type == 'block') {
+        addPlatform(p.block)
+        if (p.bonus) {
+
+        }
+      }
+      if (p.type == 'space') {
+        path.length += p.width
+      }
+    }
+  }
+  addArea(0)
+  // addPlatform(1)
+  // addPlatform(0)
+  // path.length += 0
+  // addPlatform(1)
+  // addPlatform(2)
+  // addPlatform(1)
+
+
+
+  // for (let i = 3; i < 24; i++) {
+  //   let rnd = Math.floor(Math.random()*3)    
+  //   addPlatform(rnd)
+  //   path.length += 70*Math.floor(Math.random()*3)
+  // }
+
+  console.log(player)
 
 
   initControl(this)
@@ -102,6 +163,7 @@ console.log(player);
 
   this.cameras.resize(w, h)
 
+
   debug_label = this.add.text(10, 100, '123123', { font: '20px Arial', fill: '#bbb' })
   debug_label.scrollFactorX = 0
 
@@ -109,8 +171,6 @@ console.log(player);
   // coins.create(500, 200, 'coin').setScale(0.8, 0.8)
   // let coin = this.add.sprite(250, 50, 'coin')
   // console.log(player.sprite.body)
-
-  
 
   this.physics.add.collider(player.sprite, platforms)
   // this.physics.add.collider(coin, platforms)
@@ -122,12 +182,8 @@ console.log(player);
 
 const initCamera = (scene) => {
   camera = scene.cameras.main
-  // camera.setBounds(0, 0, 10000, 10000).setZoom(2)
   // camera.startFollow(target [, roundPixels] [, lerpX] [, lerpY] [, offsetX] [, offsetY])
   // camera.startFollow(player.sprite, true, 0.2, 0, 0, 0)
-
-  // .setZoom(0.4)
-  // camera.y = 130
 }
 
 
@@ -138,12 +194,6 @@ const initUI = (scene) => {
     // var round = new Phaser.Geom.Circle(340, 120, 40);
     // rect.width = rect.height = 100
     // graphics.fillRectShape(rect)
-
-    // graphics.fillStyle.color = 0xa000a0
-    // graphics.fillCircleShape(round)
-
-    //  Center the picture in the game
-    // let ui = scene.add.group()
 
     const addElement = (el) => {
       el.scrollFactorX = el.scrollFactorY = 0
@@ -209,30 +259,43 @@ function update () {
     debug_label.setText('Game over')
     return
   }
+  let player_anim = player.sprite.anims,
+      player_body = player.sprite.body
 
-  debug_label.setText(player.sprite.body.blocked.down)
+      // console.log(player_anim.currentAnim.paused)
+      // console.log(player_anim.currentAnim.paused)
+
+  debug_label.setText(player_anim.currentAnim.paused)
   // debug_label.setText(player.sprite.body.velocity.x)
   
-  background.tilePositionX += player.sprite.body.velocity.x/200
+  background.tilePositionX += player_body.velocity.x/200
   
-  player.sprite.body.velocity.x += (200 - player.sprite.body.velocity.x)/20
-  let player_anim = player.sprite.anims
-  if (player.sprite.body.blocked.down) {
+  // player.sprite.body.velocity.x += (200 - player.sprite.body.velocity.x)/20
+  player_body.velocity.x = player.speed
+
+  if (player_body.blocked.down) {
     if (!player_anim.isPlaying)
-    player_anim.play('run')
+    // player_anim.play('run')
+    player.sprite.anims.currentAnim.paused = false
+
   }
   else {
-    player_anim.stop('run')
+    // player_anim.stop('run')
+    player.sprite.anims.currentAnim.paused = true
+
+
   }
-  if (player.sprite.body.blocked.right) {
-    player_anim.stop('run')
+  if (player_body.blocked.right) {
+    player.sprite.anims.currentAnim.paused = true
+    player_anim.currentFrame = player_anim.currentAnim.frames[8]
   }
+  
 
   camera.scrollX = player.sprite.x - wquat
 
-  if (controle.up.isDown && player.sprite.body.blocked.down)
+  if (controle.up.isDown && player_body.blocked.down)
   {
-    player.sprite.body.velocity.y = -650
+    player_body.velocity.y = -650
   }
 
   if (player.sprite.y > h) {
