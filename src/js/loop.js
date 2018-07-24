@@ -17,11 +17,11 @@ let player,
 
 let w = window.innerWidth,
   h = window.innerHeight,
-  wquat = w/4
+  wquat = w/3
 
 let k = 0,
   game = true
-
+ 
 function create () {
 
   display = this.add.zone(w/2, h/2, w, h)
@@ -67,9 +67,13 @@ const finishing = (player, f_platform) => {
   state.current_state = states.finished
 }
 
-const get_bonus = (player, bonus_sprite) => {
+const get_bonus = (p, bonus_sprite) => {
   power_label.setText(++bonus_num)
   bonus_sprite.destroy()
+  console.log(player.speed)
+  player.speed += 40
+  console.log(player.speed)
+  
 }
 
 
@@ -176,7 +180,8 @@ const initMap = (scene) => {
 
   const addPlatform = (type, params = {}) => {
     let x = path.length,
-        y = h,
+        highness = params.y || 0,
+        y = h - highness,
         width = platform_types[type].width * platform_types[type].scale.x,
         height = platform_types[type].height * platform_types[type].scale.y,
         scaleX = params.scaleX || 0.3,
@@ -184,18 +189,26 @@ const initMap = (scene) => {
         platform_name = platform_types[type].name
 
     if (params.bonus) {
-      addBonus(x + width/2, height)
+      addBonus(x + width/2, height + highness)
     }
 
     path.length += width
-    return platforms.create(x, y, platform_name).setOrigin(0, 1).setScale(scaleX, scaleY).refreshBody()
+    let p = platforms.create(x, 0, platform_name).setOrigin(0, 1).setScale(0.3, 0.3)
+    p.height = height/4
+    p.y = y
+    p.setSize(1000, 1000).refreshBody()
+    if (highness != 0) {
+      console.log(p)
+    }
+    p.refreshBody()
+    return p
   }
 
   const addDecoration = (type, params = {}) => {
     let block = platform_types[type],
         x = path.length,
         y = 0 
-    return decors.create(x, h + y, block.name).setScale(0.75).setOrigin(0, 1).refreshBody()
+    return decors.create(x, h + y, block.name).setScale(0.7).setOrigin(0, 1).refreshBody()
   }
 
   var anim_config = {
@@ -205,10 +218,6 @@ const initMap = (scene) => {
     repeat: -1
   }
   scene.anims.create(anim_config)
-
-  // sprite: scene.physics.add.sprite(200, 400, 'man_run', 13).setScale(0.3, 0.3)
-
-
 
   const addBonus = (x, y) => {
     // let block = platform_types[type],
@@ -245,33 +254,45 @@ const initMap = (scene) => {
   // path.length += 0
   // addPlatform(1)
   addPlatform(1)
-  addPlatform(2)
-  addPlatform(1)
-  addPlatform(2, {bonus: true})
-  addPlatform(0)
-  path.length += 80
-  addPlatform(1)
-  addPlatform(2, {bonus: true})
-  path.length += 120
   addPlatform(1)
   addPlatform(2)
   addPlatform(0)
-  path.length += 80
+  addPlatform(0, {y: 130, bonus: true})
+  path.length += 100
   addPlatform(1)
-  path.length += 120
-  addPlatform(2)
-  addPlatform(1, {bonus: true})
+  path.length += 100
+  // addPlatform(0, {y: 250})
+  addPlatform(2, {bonus: true})
+  path.length += 100
+  addPlatform(0)
+  addPlatform(1)
+  path.length += 100
+  addPlatform(0, {y: 150})
+  path.length += 100
+  addPlatform(2, {bonus: true})
+  addPlatform(1)
+  path.length += 100
+  addPlatform(0, {y: 150})
+  path.length += 100
   addPlatform(2)
   addPlatform(0, {bonus: true})
   path.length += 80
-
-  addPlatform(1, {bonus: true})
+  addPlatform(1)
   path.length += 120
   addPlatform(2)
+  path.length += 120
+  addPlatform(0, {y: 150})
+  path.length += 120
+  addPlatform(1, {bonus: true})
+  addPlatform(2)
+  addPlatform(0)
+  path.length += 80
+
+  addPlatform(1, {bonus: true})
+  path.length += 80
+  addPlatform(2)
   finish = addDecoration(4)
-  addPlatform(1)
-  addPlatform(1)
-  addPlatform(1)
+  addPlatform(3)
 
 
   // for (let i = 3; i < 24; i++) {
@@ -307,14 +328,15 @@ const initPlayer = (scene) => {
 
   // console.log(plh)
 
-  player.sprite.setSize(140, 790)
-  player.sprite.setOrigin(1.04, 0)
+  player.sprite.setSize(140, 240)
+  player.sprite.setOrigin(1.0, 0.9)
 }
 
 
 const initCamera = (scene) => {
   camera = scene.cameras.main
-  // camera.zoom = 0.3;
+  // camera.zoom = 0.1
+  // camera.scrollX += 1500
 
   // camera.startFollow(target [, roundPixels] [, lerpX] [, lerpY] [, offsetX] [, offsetY])
   // camera.startFollow(player.sprite, true, 0.2, 0, 0, 0)
@@ -322,13 +344,6 @@ const initCamera = (scene) => {
 
 
 const initUI = (scene) => {
-
-    // let graphics = scene.add.graphics({ fillStyle: { color: 0x000000, alpha: 0.5 } })
-    // var rect = new Phaser.Geom.Rectangle(300, 100)
-    // var round = new Phaser.Geom.Circle(340, 120, 40);
-    // rect.width = rect.height = 100
-    // graphics.fillRectShape(rect)
-
     const addElement = (el) => {
       el.scrollFactorX = el.scrollFactorY = 0
       // ui.add(el)
@@ -342,7 +357,7 @@ const initUI = (scene) => {
 
     let timer = scene.add.text(100, 10, '12 : 24', { font: '38px adineue PRO Cyr', fill: '#ffffff' })
 
-    let power = scene.add.sprite(0, 0, 'power').setScale(0.55)
+    let power = scene.add.sprite(0, 0, 'power').setScale(0.5)
     power_label = scene.add.text(0, 0, bonus_num, { font: '28px adineue PRO Cyr', fill: '#ffffff' })
 
 
@@ -361,11 +376,11 @@ const initUI = (scene) => {
     h2.x += 30
     h3.x += 60
 
-    power.x += 20
-    power.y -= 12
+    power.x += 38
+    power.y -= 18
 
-    power_label.x -= 45
-    power_label.y += 18
+    power_label.x -= 30
+    power_label.y += 10
 }
 
 
@@ -380,11 +395,9 @@ const initControl = (scene) => {
 
 
 
-
-
 ///////////////////////////////////////////////////
 function update () {
-  debug_label.setText(w)
+  debug_label.setText(player.speed)
 
 
   if (state.current_state == states.game) {
@@ -394,14 +407,16 @@ function update () {
     // debug_label.setText(player_anim.currentFrame.index)
     // debug_label.setText(player.sprite.body.velocity.x)
     
-    // background.tilePositionX += player_body.velocity.x/200
+    background.tilePositionX += player_body.velocity.x/200
     
     // player.sprite.body.velocity.x += (200 - player.sprite.body.velocity.x)/20
+
     player_body.velocity.x = player.speed
+    if (player.speed > player.min_speed)
+      player.speed -= 0.1
 
     if (player_body.blocked.down) {
       player_anim.resume()
-
     }
     else {
       // player_anim.stop('run')
@@ -437,13 +452,22 @@ function update () {
     let player_anim = player.sprite.anims,
         player_body = player.sprite.body
 
+    if (camera.scrollX < finish.x - w*0.7 + finish.width * finish.scaleX/2) {
+      camera.scrollX += (finish.x - w*0.7 + finish.width * finish.scaleX/2 - camera.scrollX) / 20
+    }    
+
+    if (player_body.blocked.down) {
+      player_anim.resume()
+    }
+    else {
+      player_anim.pause()
+    }
+
     if (player.sprite.x > finish.x + finish.width * finish.scaleX/1.8) {
       player.sprite.body.velocity.x = 0  
       player_anim.currentFrame = player_anim.currentAnim.frames[9]
+      player_anim.pause()
     }
-
-    // player_body.velocity.x = player.speed/2
-
   }
 }
 
