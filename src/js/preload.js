@@ -3,13 +3,14 @@ function preload () {
   this.load.setBaseURL('assets/textures/')
 
   // this.load.spritesheet('spritesheet', 'assets/textures/platformerArt.svg', {frameWidth: 256, frameHeight: 256})
-  this.load.image('ground', 'ground.png')
-  this.load.image('cloud', 'cloud.png')
-  this.load.image('coin', 'coin.png')
-  this.load.image('jump', 'jump.png')
+  // this.load.image('ground', 'ground.png')
+  // this.load.image('cloud', 'cloud.png')
+  // this.load.image('coin', 'coin.png')
+  // this.load.image('jump', 'jump.png')
   
   
   this.load.spritesheet('man_run', 'game/man_run.png', { frameWidth: 276, frameHeight: 298, endFrame: 13 })
+  this.load.spritesheet('bonus', 'game/bonus.png', { frameWidth: 213, frameHeight: 222, endFrame: 34 })
 
   this.load.image('man', 'game/man.png')
   this.load.image('man_foto', 'game/man_foto.png')

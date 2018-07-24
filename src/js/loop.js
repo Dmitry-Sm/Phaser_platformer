@@ -1,53 +1,103 @@
 import {Player} from './player'
+import {state, states} from './states'
+import { Block } from './block';
 
 let player,
-  platforms,
-  coins,
-  camera,
-  controle,
-  debug_label,
-  display,
-  background
+    platforms,
+    bonuses,
+    bonus_num,
+    camera,
+    controle,
+    debug_label,
+    display,
+    background,
+    path,
+    finish,
+    power_label
 
 let w = window.innerWidth,
   h = window.innerHeight,
   wquat = w/4
 
+let k = 0,
+  game = true
 
 function create () {
 
-  display = this.add.zone(w/2, h/2, w - 10, h - 10)
+  display = this.add.zone(w/2, h/2, w, h)
 
-  background = this.add.tileSprite(0, 0, w, h, 'background')
+  background = this.add.tileSprite(0, 10, w, h, 'background')
   background.scrollFactorX = 0
   background.scrollFactorY = 0.1
   Phaser.Display.Align.In.Center (background, display)
+  bonus_num = 0
+
+  console.log(background)
+  
+  
+  initMap(this)
+  initPlayer(this)
+  initControl(this)
+  initUI(this)
+  initCamera(this)
+
+  // console.log(' f= ' + finish.x)
+  // console.log(' w= ' + finish.width)
+  // console.log(' sc= ' + finish.scaleX)
+  // console.log(finish)
   
 
+  this.cameras.resize(w, h)
+
+  debug_label = this.add.text(10, 100, '123123', { font: '20px Arial', fill: '#bbb' })
+  debug_label.scrollFactorX = 0
+
+  // coins = this.add.group()
+  // coins.create(500, 200, 'coin').setScale(0.8, 0.8)
+  // let coin = this.add.sprite(250, 50, 'coin')
+  // console.log(player.sprite.body)
+
+  this.physics.add.collider(player.sprite, platforms)
+  this.physics.add.overlap(player.sprite, finish, finishing, null, this)
+  this.physics.add.overlap(player.sprite, bonuses, get_bonus, null, this)
+}
+
+
+const finishing = (player, f_platform) => {
+  state.current_state = states.finished
+}
+
+const get_bonus = (player, bonus_sprite) => {
+  power_label.setText(++bonus_num)
+  bonus_sprite.destroy()
+}
+
+
+const initMap = (scene) => {
 
   let platform_types = [
     {
       name: 'ground_1',
-      width: 202,
+      width: 676,
       height: 193,
       scale: {x: 0.3, y: 0.3}
     },
     {
       name: 'ground_2',
-      width: 202,
-      height: 193,
+      width: 676,
+      height: 433,
       scale: {x: 0.3, y: 0.3}
     },
     {
       name: 'ground_3',
-      width: 148,
-      height: 193,
+      width: 497,
+      height: 753,
       scale: {x: 0.3, y: 0.3}
     },
     {
       name: 'ground_long',
-      width: 148,
-      height: 193,
+      width: 2048,
+      height: 299,
       scale: {x: 0.3, y: 0.3}
     },
     {
@@ -116,27 +166,58 @@ function create () {
     }
   ]
 
-  let path = {
+  path = {
     length: 0
   }
 
-  platforms = this.physics.add.staticGroup()
+  platforms = scene.physics.add.staticGroup()
+  bonuses = scene.physics.add.staticGroup()
+  let decors = scene.physics.add.staticGroup()
 
-  const addPlatform = (type, params) => {
-    let scaleX = 
-    platforms.create(path.length, h, platform_types[type].name).setOrigin(0, 1).setScale(0.3, 0.3).refreshBody()
-    path.length += platform_types[type].width
+  const addPlatform = (type, params = {}) => {
+    let x = path.length,
+        y = h,
+        width = platform_types[type].width * platform_types[type].scale.x,
+        height = platform_types[type].height * platform_types[type].scale.y,
+        scaleX = params.scaleX || 0.3,
+        scaleY = params.scaleY || 0.3,
+        platform_name = platform_types[type].name
+
+    if (params.bonus) {
+      addBonus(x + width/2, height)
+    }
+
+    path.length += width
+    return platforms.create(x, y, platform_name).setOrigin(0, 1).setScale(scaleX, scaleY).refreshBody()
   }
 
-  const addDecoration = (type) => {
+  const addDecoration = (type, params = {}) => {
     let block = platform_types[type],
+        x = path.length,
         y = 0 
-
-    return this.add.sprite(path.length, h + y, block.name).setScale(0.7).setOrigin(0, 1)
+    return decors.create(x, h + y, block.name).setScale(0.75).setOrigin(0, 1).refreshBody()
   }
+
+  var anim_config = {
+    key: 'bonus_light',
+    frames: scene.anims.generateFrameNumbers('bonus', { start: 0, end: 33, first: 0 }),
+    frameRate: 35,
+    repeat: -1
+  }
+  scene.anims.create(anim_config)
+
+  // sprite: scene.physics.add.sprite(200, 400, 'man_run', 13).setScale(0.3, 0.3)
+
+
 
   const addBonus = (x, y) => {
-    // platforms.create(x, y, 'power').setOrigin(0, 1).setScale(0.3, 0.2).refreshBody()
+    // let block = platform_types[type],
+    //     x = path.length,
+    //     y = 0 
+    let b = bonuses.create(x, h - y + 5, 'bonus').setScale(0.3).setOrigin(0.5, 1).refreshBody()
+    b.anims.play('bonus_light')
+    
+    return b
   }
 
   const addArea = (type) => {
@@ -156,18 +237,41 @@ function create () {
     }
   }
 
-  
-  addArea(0)
-  addArea(0)
-  addArea(0)
-  addArea(1)
+
+  // addArea(0)
+  // addArea(1)
   // addPlatform(1)
   // addPlatform(0)
   // path.length += 0
   // addPlatform(1)
-  // addPlatform(2)
-  // addPlatform(1)
+  addPlatform(1)
+  addPlatform(2)
+  addPlatform(1)
+  addPlatform(2, {bonus: true})
+  addPlatform(0)
+  path.length += 80
+  addPlatform(1)
+  addPlatform(2, {bonus: true})
+  path.length += 120
+  addPlatform(1)
+  addPlatform(2)
+  addPlatform(0)
+  path.length += 80
+  addPlatform(1)
+  path.length += 120
+  addPlatform(2)
+  addPlatform(1, {bonus: true})
+  addPlatform(2)
+  addPlatform(0, {bonus: true})
+  path.length += 80
 
+  addPlatform(1, {bonus: true})
+  path.length += 120
+  addPlatform(2)
+  finish = addDecoration(4)
+  addPlatform(1)
+  addPlatform(1)
+  addPlatform(1)
 
 
   // for (let i = 3; i < 24; i++) {
@@ -175,31 +279,7 @@ function create () {
   //   addPlatform(rnd)
   //   path.length += 70*Math.floor(Math.random()*3)
   // }
-
-
-
-  initPlayer(this)
-  initControl(this)
-  initUI(this)
-  initCamera(this)
-
-  this.cameras.resize(w, h)
-
-
-  debug_label = this.add.text(10, 100, '123123', { font: '20px Arial', fill: '#bbb' })
-  debug_label.scrollFactorX = 0
-
-  // coins = this.add.group()
-  // coins.create(500, 200, 'coin').setScale(0.8, 0.8)
-  // let coin = this.add.sprite(250, 50, 'coin')
-  // console.log(player.sprite.body)
-
-  this.physics.add.collider(player.sprite, platforms)
-  // this.physics.add.collider(coin, platforms)
-
 }
-
-
 
 
 const initPlayer = (scene) => {  
@@ -214,7 +294,7 @@ const initPlayer = (scene) => {
 
   player = new Player({
     type: 'men',
-    sprite: scene.physics.add.sprite(200, 400, 'man_run', 13).setScale(0.3, 0.3)
+    sprite: scene.physics.add.sprite(200, 200, 'man_run', 13).setScale(0.3, 0.3)
   })
 
   player.sprite.anims.play('run')
@@ -225,13 +305,11 @@ const initPlayer = (scene) => {
   let plw = player.sprite.body.width,
       plh = player.sprite.body.height
 
-  console.log(plh)
+  // console.log(plh)
 
   player.sprite.setSize(140, 790)
   player.sprite.setOrigin(1.04, 0)
 }
-
-
 
 
 const initCamera = (scene) => {
@@ -264,8 +342,8 @@ const initUI = (scene) => {
 
     let timer = scene.add.text(100, 10, '12 : 24', { font: '38px adineue PRO Cyr', fill: '#ffffff' })
 
-    let power = scene.add.sprite(0, 0, 'power').setScale(0.6)
-    let power_label = scene.add.text(0, 0, '12', { font: '28px adineue PRO Cyr', fill: '#ffffff' })
+    let power = scene.add.sprite(0, 0, 'power').setScale(0.55)
+    power_label = scene.add.text(0, 0, bonus_num, { font: '28px adineue PRO Cyr', fill: '#ffffff' })
 
 
     // Phaser.Display.Align.In.Center   (addElement(scene.add.sprite(0, 0, 'coin')), display)
@@ -294,65 +372,80 @@ const initUI = (scene) => {
 const initControl = (scene) => {
   controle = scene.input.keyboard.createCursorKeys()
   scene.input.on('pointerdown', function (pointer) {
-
-    // this.add.image(pointer.x, pointer.y, 'logo');
-    // console.log(pointer.x);
-    player.jump()
+    if (state.current_state == states.game) {
+      player.jump()
+    }
   }, this)  
 }
 
 
 
-let k = 0,
-    game = true
 
 
 ///////////////////////////////////////////////////
 function update () {
-  if (!game) {
-    debug_label.setText('Game over')
-    return
-  }
-  let player_anim = player.sprite.anims,
-      player_body = player.sprite.body
+  debug_label.setText(w)
 
 
-  debug_label.setText(player_anim.currentFrame.index)
-  // debug_label.setText(player.sprite.body.velocity.x)
-  
-  background.tilePositionX += player_body.velocity.x/200
-  
-  // player.sprite.body.velocity.x += (200 - player.sprite.body.velocity.x)/20
-  player_body.velocity.x = player.speed
+  if (state.current_state == states.game) {
+    let player_anim = player.sprite.anims,
+        player_body = player.sprite.body
 
-  if (player_body.blocked.down) {
-    player_anim.resume()
-
-  }
-  else {
-    // player_anim.stop('run')
-    player_anim.pause()
+    // debug_label.setText(player_anim.currentFrame.index)
+    // debug_label.setText(player.sprite.body.velocity.x)
     
+    // background.tilePositionX += player_body.velocity.x/200
+    
+    // player.sprite.body.velocity.x += (200 - player.sprite.body.velocity.x)/20
+    player_body.velocity.x = player.speed
+
+    if (player_body.blocked.down) {
+      player_anim.resume()
+
+    }
+    else {
+      // player_anim.stop('run')
+      player_anim.pause()
+    }
+
+    if (player_body.blocked.right) {
+      player_anim.currentFrame = player_anim.currentAnim.frames[8]
+      player_anim.pause()
+    }
+
+    camera.scrollX = player.sprite.x - wquat
+
+    if (controle.up.isDown) {
+      player.jump()
+    }
+    if (player.sprite.x > finish.x + finish.width/2) {
+      console.log('++');
+    }
+
+    if (player.sprite.y > h) {
+      state.current_state = states.finished
+
+      debug_label.setText(state.current_state)
+      console.log(state.current_state)
+      
+      player.sprite.destroy()
+    }
+  }
+
+  if (state.current_state == states.finished) {
+
+    let player_anim = player.sprite.anims,
+        player_body = player.sprite.body
+
+    if (player.sprite.x > finish.x + finish.width * finish.scaleX/1.8) {
+      player.sprite.body.velocity.x = 0  
+      player_anim.currentFrame = player_anim.currentAnim.frames[9]
+    }
+
+    // player_body.velocity.x = player.speed/2
 
   }
-  if (player_body.blocked.right) {
-    player_anim.currentFrame = player_anim.currentAnim.frames[8]
-    player_anim.pause()
-  }
-  
-
-  camera.scrollX = player.sprite.x - wquat
-
-  if (controle.up.isDown)
-  {
-    player.jump()
-  }
-
-  if (player.sprite.y > h) {
-    game = false
-    player.sprite.destroy()
-  }
-
 }
+
 
 export {create, update}
