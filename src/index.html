@@ -1,18 +1,130 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
+
 <body>
     <!-- <script src="http://cdn.jsdelivr.net/npm/phaser@3.11/dist/phaser.min.js"></script> -->
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="assets/libs/phaser.min.js"></script>
+    <div id="startScreen" class="screen">
+        <div id="blackPlStart" class="black-cont"></div>
+        <!-- start screen -->
+        <div id="lushiContStart" class="luchi luchi2">
+            <div id="lushiImStart" class="luchi-im"></div>
+        </div>
+        <div id="clock" class="clock-cont">
+            <div id="clockSc" class="clock-rot">
+                <div id="clockRot" class="clock-rot">
+                    <div class="clock-im"></div>
+                </div>
+                <div id="clock1" class="clock-rot clock-line1"></div>
+                <div id="clock2" class="clock-rot clock-line2"></div>
+            </div>
+        </div>
+        <div id="txtFalgCont" class="txtFlag-cont">
+            <div id="rotFlag2" class="txt-flag txt-flag-rot1">
+                <div id="mskFlag2" class="txt-flag">
+                    <div id="txtFlag2" class="txt-flag">
+                        <div class="txt-flag txtFlag-2 txt-flag-rot2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="rotFlag4" class="txt-flag txt-flag-rot1">
+                <div id="mskFlag4" class="txt-flag">
+                    <div id="txtFlag4" class="txt-flag">
+                        <div class="txt-flag txtFlag-4 txt-flag-rot2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="rotFlag1" class="txt-flag txt-flag-rot1">
+                <div id="mskFlag1" class="txt-flag">
+                    <div id="txtFlag1" class="txt-flag">
+                        <div class="txt-flag txtFlag-1 txt-flag-rot2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="rotFlag3" class="txt-flag txt-flag-rot1">
+                <div id="mskFlag3" class="txt-flag">
+                    <div id="txtFlag3" class="txt-flag">
+                        <div class="txt-flag txtFlag-3 txt-flag-rot2"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="rotFlag5" class="txt-flag txt-flag-rot1">
+                <div id="mskFlag5" class="txt-flag">
+                    <div id="txtFlag5" class="txt-flag">
+                        <div class="txt-flag txtFlag-5 txt-flag-rot2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="txt-start-screen">
+            <div id="txtStartScreen1" class="txt-start-screen1">УСПЕЙ К УРОКУ</div>
+            <div id="txtStartScreen2" class="txt-start-screen1" style="padding-top:2px">ЗА 90 СЕКУНД</div>
+        </div>
+        <div id="btnPlay" class="btn-cont btn-replay">ИГРАТЬ</div>
+        <!-- choose player -->
+        <div class="txt-start2-screen">
+            <div id="txtStartScreen3" class="txt-start-screen1">ВЫБЕРИ, КАКИМ</div>
+            <div id="txtStartScreen4" class="txt-start-screen1" style="padding-top:2px">ГЕРОЕМ ТЫ</div>
+            <div id="txtStartScreen5" class="txt-start-screen1" style="padding-top:2px">ХОЧЕШЬ БЫТЬ!</div>
+        </div>
+        <div id = "playerIkon1" class="ikon-player ikon-player1">
+            <div id="ikons1" class="player-ikon-cont ease-in1">
+                <div id="ikon1" class="player-ikon-cont ikon1"></div>
+                <div id="player1" class="player-ikon-cont player1"></div>
+            </div>
+            <div id="txt1ikon1" class="txt-player" style="padding-top:4%">СУПЕР</div>
+            <div id="txt2ikon1" class="txt-player" style="padding-top:2px">МАЛЬЧИК</div>
+            <div id="btnPlayer1" class="btn-players"></div>
+        </div>
+        <div id = "playerIkon2" class="ikon-player ikon-player2">
+            <div id="ikons2" class="player-ikon-cont ease-in1">
+                <div id="ikon2" class="player-ikon-cont ikon2"></div>
+                <div id="player2" class="player-ikon-cont player2"></div>
+            </div>
+            <div id="txt1ikon2" class="txt-player" style="padding-top:4%">СУПЕР</div>
+            <div id="txt2ikon2" class="txt-player" style="padding-top:2px">ДЕВОЧКА</div>
+            <div id="btnPlayer2" class="btn-players"></div>
+        </div>
+    </div>
+    </div>
+    <div id="finalScreen" class="screen">
+        <div id="blackPl" class="black-cont"></div>
+        <div id="blueCircle" class="blue-circle"></div>
+        <div id="lushiCont" class="luchi">
+            <div id="lushiIm" class="luchi-im"></div>
+        </div>
+        <div id="kubokCont" class="kubok-cont">
+            <div id="kubokScale" class="kubok-sc">
+                <div id="kubokIm" class="kubok-im"></div>
+            </div>
+        </div>
+        <div id="star1" class="star-left">
+            <div id="starIm1" class="star-left-im star-good"></div>
+        </div>
+        <div id="star2" class="star-middle">
+            <div id="starIm2" class="star-middle-im star-good"></div>
+        </div>
+        <div id="star3" class="star-right">
+            <div id="starIm3" class="star-right-im star-good"></div>
+        </div>
+        <div id="txt1" class="txt-top">МОЛОДЕЦ!</div>
+        <div id="txt2" class="txt-down">ОТЛИЧНЫЙ РЕЗУЛЬТАТ!</div>
+        <div id="line1" class="line"></div>
+        <div id="txtScore" class="txt-score">ВСЕГО БАЛЛОВ:</div>
+        <div id="score" class="score">233</div>
+        <div id="btnSelfy" class="btn-cont btn-selfy">СЕЛФИ</div>
+        <div id="btnReplay" class="btn-cont btn-replay">ИГРАТЬ</div>
+    </div>
     <script src="app.js"></script>
 </body>
+
 </html>

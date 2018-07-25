@@ -9,7 +9,7 @@ const states = {
 }
 
 var state = {
-  current_state: states.game,
+  current_state: states.start_menu,
   set_state: (st) => {
     state.current_state = st
   }

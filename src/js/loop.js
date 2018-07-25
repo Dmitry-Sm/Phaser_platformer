@@ -1,10 +1,13 @@
 import {Player} from './player'
 import {state, states} from './states'
 import { Block } from './block';
+import {animateFinalScreen} from './finalScreen'
 
 let player,
+    start_pos,
     platforms,
     bonuses,
+    picked_bonuses,
     bonus_num,
     camera,
     controle,
@@ -36,7 +39,8 @@ function create () {
   background.tilePositionY += 300
   bonus_num = 0
 
-  console.log(background)
+  // console.log(background)
+  picked_bonuses = []
   
   
   initMap(this)
@@ -53,7 +57,7 @@ function create () {
 
   this.cameras.resize(w, h)
 
-  debug_label = this.add.text(10, 100, '123123', { font: '20px Arial', fill: '#bbb' })
+  debug_label = this.add.text(10, 100, '', { font: '20px Arial', fill: '#bbb' })
   debug_label.scrollFactorX = 0
 
   // coins = this.add.group()
@@ -67,13 +71,43 @@ function create () {
 }
 
 
+
+const game_start = (player_type) => {
+  state.current_state = states.game
+  
+  showUI()
+  bonus_num = 0
+
+  player.life = 3
+  player.sprite.visible = true
+  player.spawn_place = start_pos
+  player.sprite.x = start_pos.x
+  player.sprite.y = start_pos.y
+  player.speed = player.start_speed
+
+  for (let b of picked_bonuses) {
+    b.y -= 10000
+    b.refreshBody()
+  }
+  picked_bonuses = []
+}
+
+
+
 const finishing = (player, f_platform) => {
-  state.current_state = states.finished
+  if (state.current_state == states.game)
+    state.current_state = states.finished
 }
 
 const get_bonus = (p, bonus_sprite) => {
   power_label.setText(++bonus_num)
-  bonus_sprite.destroy()
+  // console.log(bonus_sprite)
+  
+  bonus_sprite.y += 10000
+  bonus_sprite.refreshBody()
+  picked_bonuses.push(bonus_sprite)
+  // player.sprite.visible = true
+
   player.speed += 40
   player.spawn_place = {
     x: player.sprite.x,
@@ -290,6 +324,7 @@ const initMap = (scene) => {
   path.length += 120
   addPlatform(1, {bonus: true})
   addPlatform(2)
+  addPlatform(0)
   path.length += 100
   // addPlatform(0, {y: 250})
   addPlatform(2, {bonus: true})
@@ -342,7 +377,7 @@ const initPlayer = (scene) => {
   }
   scene.anims.create(anim_config);
 
-  let start_pos = {
+  start_pos = {
     x: 200,
     y: 200
   }
@@ -352,10 +387,11 @@ const initPlayer = (scene) => {
     sprite: scene.physics.add.sprite(start_pos.x, start_pos.y, 'man_run', 13).setScale(0.3, 0.3)
   })
 
+  player.sprite.visible = false
   player.spawn_place = start_pos
   player.sprite.anims.play('run')
 
-  // console.log(player.sprite.anims)
+  // console.log(player.sprite)
 
   player.sprite.setBounce(0)
   let plw = player.sprite.body.width,
@@ -388,16 +424,23 @@ const initUI = (scene) => {
     let h2 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
     let h3= scene.add.sprite(0, 0, 'heart').setScale(0.42)
     // hearts.add(h1)
-    console.log(h1)
+    h1.visible = false
+    h2.visible = false
+    h3.visible = false
+
 
     let timer = scene.add.text(100, 10, '12 : 24', { font: '38px adineue PRO Cyr', fill: '#ffffff' })
+    timer.visible = false
 
     let power = scene.add.sprite(0, 0, 'power').setScale(0.5)
+    power.visible = false
     power_label = scene.add.text(0, 0, bonus_num, { font: '28px adineue PRO Cyr', fill: '#ffffff' })
+    power_label.visible = false
 
     ui = {
       hearts: [h1, h2, h3],
       timer,
+      power,
       power_label
     }
 
@@ -423,6 +466,24 @@ const initUI = (scene) => {
     power_label.y += 10
 }
 
+const showUI = () => {
+  for (let h of ui.hearts) {
+    h.visible = true
+  }
+  ui.timer.visible = true
+  ui.power.visible = true
+  ui.power_label.visible = true
+}
+
+const hideUI = () => {
+  for (let h of ui.hearts) {
+    h.visible = false
+  }
+  ui.timer.visible = false
+  ui.power.visible = false
+  ui.power_label.visible = false
+}
+
 
 const initControl = (scene) => {
   controle = scene.input.keyboard.createCursorKeys()
@@ -433,25 +494,42 @@ const initControl = (scene) => {
   }, this)  
 }
 
+
 const dieing = () => {
+  console.log (player.life)
   ui.hearts[--player.life].visible = false
   if (player.life > 0) {
+
     player.sprite.x = player.spawn_place.x
     player.sprite.y = player.spawn_place.y
-    player.speed = player.start_speed
+    player.speed = 10
+    setTimeout(function(){
+      player.speed = player.start_speed
+    },200)
   }
   else {
-    state.current_state = states.start_menu
-    player.sprite.destroy()
+    finish_game()
   }
+}
+
+const finish_game = () => {
+  state.current_state = states.start_menu
+  animateFinalScreen("setScore", bonus_num*40)
+  animateFinalScreen("startAnim")
+  hideUI()
+
+  // player.sprite.destroy()
 }
 
 
 
 ///////////////////////////////////////////////////
 function update () {
-  debug_label.setText(player.speed)
+  // debug_label.setText(player.speed)
 
+  if (state.current_state == states.start_menu) {
+    player.sprite.anims.pause()
+  }
 
   if (state.current_state == states.game) {
     let player_anim = player.sprite.anims,
@@ -491,7 +569,7 @@ function update () {
       // state.current_state = states.finished
       dieing()
 
-      debug_label.setText(state.current_state)
+      // debug_label.setText(state.current_state)
       // console.log(state.current_state)
       
     }
@@ -517,9 +595,11 @@ function update () {
       player.sprite.body.velocity.x = 0  
       player_anim.currentFrame = player_anim.currentAnim.frames[9]
       player_anim.pause()
+      
+      finish_game()
     }
   }
 }
 
 
-export {create, update}
+export {create, game_start, update}

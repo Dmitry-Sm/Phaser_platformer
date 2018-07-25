@@ -14,7 +14,7 @@ const
 
 const path = {
   indexSrc: 'src/*.html',
-  sassSrc: 'src/sass/**/*.scss',
+  sassSrc: 'src/sass/**/style.scss',
   jsSrc: 'src/js/**/*.js',
   imgSrc: 'src/img/**/*.{gif,jpg,png,svg}'
 }
@@ -90,6 +90,6 @@ gulp.task('browser-sync', () =>
 
 gulp.task('default', ['index', 'css', 'js', 'images', 'browser-sync'], () => {
   gulp.watch(path.indexSrc, ['index'])
-  gulp.watch(path.sassSrc, ['css'])
+  gulp.watch('src/sass/**/*.scss', ['css'])
   gulp.watch(path.jsSrc, ['js'])
 })

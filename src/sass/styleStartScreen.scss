@@ -1,0 +1,196 @@
+.txtFlag-cont{
+    width: 90%;
+    height: 30%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 3%;
+    margin: auto;
+}
+.txt-flag{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+.txtFlag-1{
+    overflow: auto;
+    background: url('assets/textures/startScreen/t1.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.txtFlag-2{
+    overflow: auto;
+    background: url('assets/textures/startScreen/t2.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.txtFlag-3{
+    overflow: auto;
+    background: url('assets/textures/startScreen/t3.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.txtFlag-4{
+    overflow: auto;
+    background: url('assets/textures/startScreen/t4.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.txtFlag-5{
+    overflow: auto;
+    background: url('assets/textures/startScreen/t5.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.txt-flag-rot1{
+    transform: rotate(-20deg);
+}
+.txt-flag-rot2{
+    transform: rotate(20deg);
+}
+.clock-cont{
+    width: 55%;
+    height: 30%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0px);
+}
+.clock-rot{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.clock-line1{
+    background: url('assets/textures/startScreen/clock1.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.clock-line2{
+    background: url('assets/textures/startScreen/clock2.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.clock-im{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url('assets/textures/startScreen/clock.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.luchi2{
+    top:50%;
+}
+.txt-start-screen{
+    width: 70%;
+    height: 10%;
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.txt-start-screen1{
+    width: 100%;
+    height: 50%;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    text-align: center;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 170%;
+}
+.txt-start2-screen{
+    width: 70%;
+    height: 10%;
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.ikon-player{
+    width: 50%;
+    height: 30%;
+    position: absolute;
+    top:40%;
+}
+.ikon-player1{
+    left: 2%;
+}
+.ikon-player2{
+    right: 2%;
+}
+.player-ikon-cont{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.ikon1{
+    background: url('assets/textures/startScreen/ikon1.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.ikon2{
+    background: url('assets/textures/startScreen/ikon1.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.player1{
+    background: url('assets/textures/startScreen/playerIkon1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.player2{
+    background: url('assets/textures/startScreen/playerIkon2.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+.txt-player{
+    width: 100%;
+    height: 13%;
+    position: relative;
+    top: 95%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    text-align: center;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120%;
+}
+.btn-players{
+    width: 74%;
+    height: 74%;
+    position: absolute;
+    left: 13%;
+    top: 13%;
+}

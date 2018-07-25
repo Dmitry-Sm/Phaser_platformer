@@ -1,7 +1,4 @@
-$green: #392;
-
-body {
-  margin: 0;
-  color: $green;
-  overflow: hidden;
-}
+@import 'easings';
+@import 'styleFinalScreen';
+@import 'mainStyle';
+@import 'styleStartScreen';

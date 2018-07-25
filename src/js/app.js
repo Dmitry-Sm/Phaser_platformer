@@ -5,6 +5,8 @@ import $ from 'jquery'
 import {check} from './mod'
 import {preload} from './preload'
 import {create, update} from './loop'
+import {animateFinalScreen} from './finalScreen'
+import {animateStartScreen} from './startScreen'
 
 
 $(document).ready(()=>{
@@ -26,9 +28,11 @@ $(document).ready(()=>{
   };
 
   var game = new Phaser.Game(config);
-
+  animateStartScreen("startAnim");
 })
 
+animateFinalScreen("init");
+animateStartScreen("init");
 
 // const risezeWindow = (event) => {
 //   console.log(event)

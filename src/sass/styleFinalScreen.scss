@@ -1,0 +1,260 @@
+@font-face {
+    font-weight: 900;
+    font-family: 'adineuePROCyr';
+    font-style: normal;
+    src: url("assets/fonts/adineuePROCyr-Black.woff2") format("woff2"), url("assets/fonts/adineuePROCyr-Black.woff") format("woff");
+}
+
+.blue-circle {
+    width: 120%;
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    top: -2%;
+    transform: translate3d(-50%, 0px, 0px);
+    background: url('assets/textures/finalScreen/blueCircle.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.luchi {
+    width: 180%;
+    height: 1000px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate3d(-50%, -50%, 0px);
+}
+
+.luchi-im {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url('assets/textures/finalScreen/Luchi.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    transform: rotateZ(0deg);
+    animation-name: rotateLushi;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rotateLushi {
+    0% {
+        transform: rotateZ(0deg)
+    }
+    100% {
+        transform: rotateZ(360deg)
+    }
+}
+
+.black-cont {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.5;
+}
+
+.kubok-cont {
+    width: 287px;
+    height: 511px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate3d(-50%, -50%, 0px);
+}
+
+.kubok-sc {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.kubok-im {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url('assets/textures/finalScreen/kubok.png');
+    background-repeat: no-repeat;
+    background-position: -2px -2px;
+    transform: scale(0.45);
+}
+
+.btn-cont {
+    width: 76%;
+    height: 11%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 20px;
+    color: white;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 240%;
+}
+
+.btn-selfy {
+    bottom: 17.5%;
+    border: 3px solid #FFFA89;
+    background-color: rgba(250, 222, 81, 0.45);
+}
+
+.btn-replay {
+    bottom: 3%;
+    border: 3px solid #fff;
+    background-color: rgba(255, 255, 255, 0.45);
+}
+
+.txt-top {
+    width: 50%;
+    height: 10%;
+    position: absolute;
+    top: 13%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 240%;
+}
+
+.txt-down {
+    width: 84%;
+    height: 10%;
+    position: absolute;
+    top: 19.5%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 140%;
+}
+
+.star-left {
+    width: 18%;
+    height: 7%;
+    position: absolute;
+    left: 0;
+    right: 32%;
+    top: 6%;
+    margin: auto;
+}
+
+.star-left-im {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: rotateZ(-20deg);
+    left: 0;
+    right: 0;
+}
+
+.star-middle {
+    width: 30%;
+    height: 10%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2%;
+    margin: auto;
+}
+
+.star-middle-im {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.star-right {
+    width: 18%;
+    height: 7%;
+    position: absolute;
+    left: 32%;
+    right: 0;
+    top: 6%;
+    margin: auto;
+}
+
+.star-right-im {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: rotateZ(20deg);
+    left: 0;
+    right: 0;
+}
+
+.star-good {
+    background: url('assets/textures/finalScreen/goodStar.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.star-bad {
+    background: url('assets/textures/finalScreen/badStar.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.line {
+    width: 79%;
+    height: 2px;
+    position: absolute;
+    top: 28%;
+    background: #F2B944;
+    left: 10.5%;
+}
+
+.txt-score {
+    width: 50%;
+    height: 4%;
+    position: absolute;
+    top: 29%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 110%;
+}
+
+.score {
+    width: 30%;
+    height: 5.21%;
+    position: absolute;
+    top: 32.5%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    font-family: 'adineuePROCyr', 'Arial', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 190%;
+}

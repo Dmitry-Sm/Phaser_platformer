@@ -1,0 +1,53 @@
+.ease-in1 {
+    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -moz-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -ms-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -o-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.ease-out1 {
+    -webkit-transition: all 600ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    -moz-transition: all 600ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    -ms-transition: all 600ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    -o-transition: all 600ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    transition: all 600ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.ease-in2 {
+    -webkit-transition: all 800ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -moz-transition: all 800ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -ms-transition: all 800ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    -o-transition: all 800ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: all 800ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.ease-out2 {
+    -webkit-transition: all 800ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    -moz-transition: all 800ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    -ms-transition: all 800ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    -o-transition: all 800ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    transition: all 800ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.ease-inOut1 {
+    -webkit-transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    -moz-transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    -ms-transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    -o-transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.ease-back1 {
+    -webkit-transition: all 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -moz-transition: all 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -ms-transition: all 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -o-transition: all 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ease-linear1 {
+    -webkit-transition: all 400ms;
+    -moz-transition: all 400ms;
+    -ms-transition: all 400ms;
+    -o-transition: all 400ms;
+    transition: all 400ms;
+}
