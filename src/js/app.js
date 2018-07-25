@@ -4,7 +4,7 @@ import $ from 'jquery'
 // } from 'Phaser'
 import {check} from './mod'
 import {preload} from './preload'
-import {create, update} from './loop'
+import {create, game_start, update} from './loop'
 import {animateFinalScreen} from './finalScreen'
 import {animateStartScreen} from './startScreen'
 
@@ -25,10 +25,12 @@ $(document).ready(()=>{
         create: create,
         update: update
     }
-  };
+  }
 
-  var game = new Phaser.Game(config);
-  animateStartScreen("startAnim");
+  var game = new Phaser.Game(config)
+  //  animateStartScreen("startAnim")
+  //  create()
+  //  game_start()
 })
 
 animateFinalScreen("init");

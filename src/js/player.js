@@ -9,6 +9,10 @@ class Player {
     this.jump_height = 650
     this.life = 3
     this.spawn_place = {x: 0, y: 100}
+    this.start_pos = {
+      x: 200,
+      y: 200
+    }
   }
 
   jump() {

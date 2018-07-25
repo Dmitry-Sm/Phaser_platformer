@@ -1,10 +1,10 @@
 import {Player} from './player'
 import {state, states} from './states'
+import {initUI, showUI, hideUI} from './ui'
 import { Block } from './block';
 import {animateFinalScreen} from './finalScreen'
 
 let player,
-    start_pos,
     platforms,
     bonuses,
     picked_bonuses,
@@ -16,15 +16,11 @@ let player,
     ui,
     background,
     path,
-    finish,
-    power_label
+    finish
 
 let w = window.innerWidth,
-  h = window.innerHeight,
-  wquat = w/3
-
-let k = 0,
-  game = true
+    h = window.innerHeight,
+    wquat = w/3
 
 
  
@@ -32,42 +28,33 @@ function create () {
 
   display = this.add.zone(w/2, h/2, w, h)
 
-  background = this.add.tileSprite(0, 0, w, h, 'background').setOrigin(0, 0.5)
+  background = this.add.tileSprite(0, 0, w + 1, h, 'background')
   background.scrollFactorX = 0
-  background.scrollFactorY = 0.1
+  background.scrollFactorY = 0
+
+// 
   Phaser.Display.Align.In.BottomCenter (background, display)
   background.tilePositionY += 300
-  bonus_num = 0
 
   // console.log(background)
   picked_bonuses = []
   
-  
   initMap(this)
-  initPlayer(this)
+  player = initPlayer(this)
   initControl(this)
-  initUI(this)
+  ui = initUI(this)
   initCamera(this)
-
-  // console.log(' f= ' + finish.x)
-  // console.log(' w= ' + finish.width)
-  // console.log(' sc= ' + finish.scaleX)
-  // console.log(finish)
-  
 
   this.cameras.resize(w, h)
 
   debug_label = this.add.text(10, 100, '', { font: '20px Arial', fill: '#bbb' })
   debug_label.scrollFactorX = 0
 
-  // coins = this.add.group()
-  // coins.create(500, 200, 'coin').setScale(0.8, 0.8)
-  // let coin = this.add.sprite(250, 50, 'coin')
-  // console.log(player.sprite.body)
-
   this.physics.add.collider(player.sprite, platforms)
   this.physics.add.overlap(player.sprite, finish, finishing, null, this)
   this.physics.add.overlap(player.sprite, bonuses, get_bonus, null, this)
+
+  game_start() // !!!
 }
 
 
@@ -75,14 +62,15 @@ function create () {
 const game_start = (player_type) => {
   state.current_state = states.game
   
-  showUI()
+  showUI(ui)
   bonus_num = 0
+  ui.power_label.setText(bonus_num)
 
   player.life = 3
   player.sprite.visible = true
-  player.spawn_place = start_pos
-  player.sprite.x = start_pos.x
-  player.sprite.y = start_pos.y
+  player.spawn_place = player.start_pos
+  player.sprite.x = player.start_pos.x
+  player.sprite.y = player.start_pos.y
   player.speed = player.start_speed
 
   for (let b of picked_bonuses) {
@@ -93,14 +81,14 @@ const game_start = (player_type) => {
 }
 
 
-
 const finishing = (player, f_platform) => {
   if (state.current_state == states.game)
     state.current_state = states.finished
 }
 
+
 const get_bonus = (p, bonus_sprite) => {
-  power_label.setText(++bonus_num)
+  ui.power_label.setText(++bonus_num)
   // console.log(bonus_sprite)
   
   bonus_sprite.y += 10000
@@ -108,7 +96,7 @@ const get_bonus = (p, bonus_sprite) => {
   picked_bonuses.push(bonus_sprite)
   // player.sprite.visible = true
 
-  player.speed += 40
+  player.speed += 60
   player.spawn_place = {
     x: player.sprite.x,
     y: player.sprite.y
@@ -233,9 +221,8 @@ const initMap = (scene) => {
 
     path.length += width - 1
     let p = platforms.create(x, 0, platform_name).setOrigin(0, 1).setScale(0.3, 0.3)
-    p.height = height/4
+    // p.height = height/4
     p.y = y
-    p.setSize(1000, 1000).refreshBody()
     // if (highness != 0) {
     //   console.log(p)
     // }
@@ -377,29 +364,28 @@ const initPlayer = (scene) => {
   }
   scene.anims.create(anim_config);
 
-  start_pos = {
-    x: 200,
-    y: 200
-  }
-
-  player = new Player({
+  let pl = new Player({
     type: 'men',
-    sprite: scene.physics.add.sprite(start_pos.x, start_pos.y, 'man_run', 13).setScale(0.3, 0.3)
+    sprite: scene.physics.add.sprite(0, 0, 'man_run', 13).setScale(0.3, 0.3)
   })
 
-  player.sprite.visible = false
-  player.spawn_place = start_pos
-  player.sprite.anims.play('run')
+  pl.sprite.x = pl.start_pos.x
+  pl.sprite.y = pl.start_pos.y
+  pl.sprite.visible = false
+  pl.spawn_place = pl.start_pos
+  pl.sprite.anims.play('run')
 
   // console.log(player.sprite)
 
-  player.sprite.setBounce(0)
-  let plw = player.sprite.body.width,
-      plh = player.sprite.body.height
+  pl.sprite.setBounce(0)
+  let plw = pl.sprite.body.width,
+      plh = pl.sprite.body.height
 
 
-  player.sprite.setSize(140, 240)
-  player.sprite.setOrigin(1.0, 0.9)
+  pl.sprite.setSize(140, 240)
+  pl.sprite.setOrigin(1.0, 0.9)
+
+  return pl
 }
 
 
@@ -410,78 +396,6 @@ const initCamera = (scene) => {
 
   // camera.startFollow(target [, roundPixels] [, lerpX] [, lerpY] [, offsetX] [, offsetY])
   // camera.startFollow(player.sprite, true, 0.2, 0, 0, 0)
-}
-
-
-const initUI = (scene) => {
-    const addElement = (el) => {
-      el.scrollFactorX = el.scrollFactorY = 0
-      // ui.add(el)
-      return el
-    }
-
-    let h1 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
-    let h2 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
-    let h3= scene.add.sprite(0, 0, 'heart').setScale(0.42)
-    // hearts.add(h1)
-    h1.visible = false
-    h2.visible = false
-    h3.visible = false
-
-
-    let timer = scene.add.text(100, 10, '12 : 24', { font: '38px adineue PRO Cyr', fill: '#ffffff' })
-    timer.visible = false
-
-    let power = scene.add.sprite(0, 0, 'power').setScale(0.5)
-    power.visible = false
-    power_label = scene.add.text(0, 0, bonus_num, { font: '28px adineue PRO Cyr', fill: '#ffffff' })
-    power_label.visible = false
-
-    ui = {
-      hearts: [h1, h2, h3],
-      timer,
-      power,
-      power_label
-    }
-
-    // Phaser.Display.Align.In.Center   (addElement(scene.add.sprite(0, 0, 'coin')), display)
-
-    Phaser.Display.Align.In.TopLeft (addElement(h1), display)
-    Phaser.Display.Align.In.TopLeft (addElement(h2), display)
-    Phaser.Display.Align.In.TopLeft (addElement(h3), display)
-    
-    Phaser.Display.Align.In.TopCenter (addElement(timer), display)
-    
-    Phaser.Display.Align.In.TopRight (addElement(power), display)
-    Phaser.Display.Align.In.TopRight (addElement(power_label), display)
-
-
-    h2.x += 30
-    h3.x += 60
-
-    power.x += 38
-    power.y -= 18
-
-    power_label.x -= 30
-    power_label.y += 10
-}
-
-const showUI = () => {
-  for (let h of ui.hearts) {
-    h.visible = true
-  }
-  ui.timer.visible = true
-  ui.power.visible = true
-  ui.power_label.visible = true
-}
-
-const hideUI = () => {
-  for (let h of ui.hearts) {
-    h.visible = false
-  }
-  ui.timer.visible = false
-  ui.power.visible = false
-  ui.power_label.visible = false
 }
 
 
@@ -512,11 +426,12 @@ const dieing = () => {
   }
 }
 
+
 const finish_game = () => {
   state.current_state = states.start_menu
   animateFinalScreen("setScore", bonus_num*40)
   animateFinalScreen("startAnim")
-  hideUI()
+  hideUI(ui)
 
   // player.sprite.destroy()
 }
@@ -525,7 +440,7 @@ const finish_game = () => {
 
 ///////////////////////////////////////////////////
 function update () {
-  // debug_label.setText(player.speed)
+  // debug_label.setText(h - player.sprite.y)
 
   if (state.current_state == states.start_menu) {
     player.sprite.anims.pause()
@@ -560,6 +475,10 @@ function update () {
     }
 
     camera.scrollX = player.sprite.x - wquat
+    let camera_y = -(h*0.9 - player.sprite.y)/4
+    camera.scrollY += (camera_y - camera.scrollY)/2
+    if (camera.scrollY > 0)
+      camera.scrollY = 0
 
     if (controle.up.isDown) {
       player.jump()
