@@ -10,7 +10,7 @@ function preload () {
   
   
   this.load.spritesheet('man_run', 'game/man_run.png', { frameWidth: 276, frameHeight: 298, endFrame: 13 })
-  this.load.spritesheet('bonus', 'game/bonus.png', { frameWidth: 213, frameHeight: 222.5, endFrame: 34 })
+  this.load.spritesheet('bonus', 'game/bonus.png', { frameWidth: 213, frameHeight: 222.4, endFrame: 34 })
 
   this.load.image('man', 'game/man.png')
   this.load.image('man_foto', 'game/man_foto.png')

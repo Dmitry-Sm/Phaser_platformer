@@ -10,6 +10,7 @@ let player,
     controle,
     debug_label,
     display,
+    ui,
     background,
     path,
     finish,
@@ -21,15 +22,18 @@ let w = window.innerWidth,
 
 let k = 0,
   game = true
+
+
  
 function create () {
 
   display = this.add.zone(w/2, h/2, w, h)
 
-  background = this.add.tileSprite(0, 10, w, h, 'background')
+  background = this.add.tileSprite(0, 0, w, h, 'background').setOrigin(0, 0.5)
   background.scrollFactorX = 0
   background.scrollFactorY = 0.1
-  Phaser.Display.Align.In.Center (background, display)
+  Phaser.Display.Align.In.BottomCenter (background, display)
+  background.tilePositionY += 300
   bonus_num = 0
 
   console.log(background)
@@ -70,10 +74,11 @@ const finishing = (player, f_platform) => {
 const get_bonus = (p, bonus_sprite) => {
   power_label.setText(++bonus_num)
   bonus_sprite.destroy()
-  console.log(player.speed)
   player.speed += 40
-  console.log(player.speed)
-  
+  player.spawn_place = {
+    x: player.sprite.x,
+    y: player.sprite.y
+  }  
 }
 
 
@@ -197,9 +202,9 @@ const initMap = (scene) => {
     p.height = height/4
     p.y = y
     p.setSize(1000, 1000).refreshBody()
-    if (highness != 0) {
-      console.log(p)
-    }
+    // if (highness != 0) {
+    //   console.log(p)
+    // }
     p.refreshBody()
     return p
   }
@@ -285,6 +290,31 @@ const initMap = (scene) => {
   path.length += 120
   addPlatform(1, {bonus: true})
   addPlatform(2)
+  path.length += 100
+  // addPlatform(0, {y: 250})
+  addPlatform(2, {bonus: true})
+  path.length += 100
+  addPlatform(0)
+  addPlatform(1)
+  path.length += 100
+  addPlatform(0, {y: 150})
+  path.length += 100
+  addPlatform(2, {bonus: true})
+  addPlatform(1)
+  path.length += 100
+  addPlatform(0, {y: 150})
+  path.length += 100
+  addPlatform(2)
+  addPlatform(0, {bonus: true})
+  path.length += 80
+  addPlatform(1)
+  path.length += 120
+  addPlatform(2)
+  path.length += 120
+  addPlatform(0, {y: 150})
+  path.length += 120
+  addPlatform(1, {bonus: true})
+  addPlatform(2)
   addPlatform(0)
   path.length += 80
 
@@ -312,21 +342,25 @@ const initPlayer = (scene) => {
   }
   scene.anims.create(anim_config);
 
+  let start_pos = {
+    x: 200,
+    y: 200
+  }
 
   player = new Player({
     type: 'men',
-    sprite: scene.physics.add.sprite(200, 200, 'man_run', 13).setScale(0.3, 0.3)
+    sprite: scene.physics.add.sprite(start_pos.x, start_pos.y, 'man_run', 13).setScale(0.3, 0.3)
   })
 
+  player.spawn_place = start_pos
   player.sprite.anims.play('run')
 
-  console.log(player.sprite.anims)
+  // console.log(player.sprite.anims)
 
   player.sprite.setBounce(0)
   let plw = player.sprite.body.width,
       plh = player.sprite.body.height
 
-  // console.log(plh)
 
   player.sprite.setSize(140, 240)
   player.sprite.setOrigin(1.0, 0.9)
@@ -354,12 +388,18 @@ const initUI = (scene) => {
     let h2 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
     let h3= scene.add.sprite(0, 0, 'heart').setScale(0.42)
     // hearts.add(h1)
+    console.log(h1)
 
     let timer = scene.add.text(100, 10, '12 : 24', { font: '38px adineue PRO Cyr', fill: '#ffffff' })
 
     let power = scene.add.sprite(0, 0, 'power').setScale(0.5)
     power_label = scene.add.text(0, 0, bonus_num, { font: '28px adineue PRO Cyr', fill: '#ffffff' })
 
+    ui = {
+      hearts: [h1, h2, h3],
+      timer,
+      power_label
+    }
 
     // Phaser.Display.Align.In.Center   (addElement(scene.add.sprite(0, 0, 'coin')), display)
 
@@ -393,6 +433,19 @@ const initControl = (scene) => {
   }, this)  
 }
 
+const dieing = () => {
+  ui.hearts[--player.life].visible = false
+  if (player.life > 0) {
+    player.sprite.x = player.spawn_place.x
+    player.sprite.y = player.spawn_place.y
+    player.speed = player.start_speed
+  }
+  else {
+    state.current_state = states.start_menu
+    player.sprite.destroy()
+  }
+}
+
 
 
 ///////////////////////////////////////////////////
@@ -413,7 +466,7 @@ function update () {
 
     player_body.velocity.x = player.speed
     if (player.speed > player.min_speed)
-      player.speed -= 0.1
+      player.speed *= 0.9996
 
     if (player_body.blocked.down) {
       player_anim.resume()
@@ -434,13 +487,13 @@ function update () {
       player.jump()
     }
 
-    if (player.sprite.y > h) {
-      state.current_state = states.finished
+    if (player.sprite.y > h + 80) {
+      // state.current_state = states.finished
+      dieing()
 
       debug_label.setText(state.current_state)
-      console.log(state.current_state)
+      // console.log(state.current_state)
       
-      // player.sprite.destroy()
     }
   }
 

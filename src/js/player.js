@@ -7,6 +7,8 @@ class Player {
     this.max_speed = 400
     this.speed = 200
     this.jump_height = 650
+    this.life = 3
+    this.spawn_place = {x: 0, y: 100}
   }
 
   jump() {
