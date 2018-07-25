@@ -192,7 +192,7 @@ const initMap = (scene) => {
       addBonus(x + width/2, height + highness)
     }
 
-    path.length += width
+    path.length += width - 1
     let p = platforms.create(x, 0, platform_name).setOrigin(0, 1).setScale(0.3, 0.3)
     p.height = height/4
     p.y = y
@@ -433,9 +433,6 @@ function update () {
     if (controle.up.isDown) {
       player.jump()
     }
-    if (player.sprite.x > finish.x + finish.width/2) {
-      console.log('++');
-    }
 
     if (player.sprite.y > h) {
       state.current_state = states.finished
@@ -443,7 +440,7 @@ function update () {
       debug_label.setText(state.current_state)
       console.log(state.current_state)
       
-      player.sprite.destroy()
+      // player.sprite.destroy()
     }
   }
 
