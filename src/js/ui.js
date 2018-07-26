@@ -18,7 +18,7 @@ const initUI = (scene) => {
   h3.visible = false
 
 
-  let timer = scene.add.text(100, 10, '12 : 24', {
+  let timer = scene.add.text(100, 10, '1:30', {
     font: '38px adineue PRO Cyr',
     fill: '#ffffff'
   })
@@ -62,6 +62,20 @@ const initUI = (scene) => {
 }
 
 
+const timer = (ui, start_time) => {
+  let cur_time = new Date()
+
+  let time = Math.floor(90 + (start_time - cur_time)/1000)
+  
+  if (time%60 < 10)
+    ui.timer.setText(Math.floor(time/60) + ' : 0' + time%60)
+  else
+    ui.timer.setText(Math.floor(time/60) + ' : ' + time%60)
+
+  return time
+}
+
+
 const showUI = (ui) => {
   for (let h of ui.hearts) {
     h.visible = true
@@ -85,6 +99,7 @@ const hideUI = (ui) => {
 
 export {
   initUI,
+  timer,
   showUI,
   hideUI
 }

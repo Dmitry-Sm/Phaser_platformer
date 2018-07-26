@@ -128,7 +128,7 @@ function logicEndGame() {
       if (!isAnimFinalScreen[1]) {
         if (frames == 2) {
           blackPl.setAttribute('class', 'black-cont ease-in1');
-          blackPl.style.opacity = 0.5;
+          blackPl.style.opacity = 0.7;
         }
         if (frames == 3) {
           star1.setAttribute('class', 'star-left ease-in1');

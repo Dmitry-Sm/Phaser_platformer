@@ -172,7 +172,7 @@ function logicStartGame() {
       if (!isAnimStartScreen[1]) {
         if (frames == 1) {
           blackPlStart.setAttribute('class', 'black-cont ease-in1');
-          blackPlStart.style.opacity = 0.5;
+          blackPlStart.style.opacity = 0.7;
         }
         if (frames == 4) {
           mskFlag1.setAttribute('class', 'txt-flag ease-out1');

@@ -1,10 +1,12 @@
 import {Player} from './player'
 import {state, states} from './states'
-import {initUI, showUI, hideUI} from './ui'
+import {initUI, timer, showUI, hideUI} from './ui'
 import { Block } from './block';
 import {animateFinalScreen} from './finalScreen'
 
 let player,
+    man, 
+    woman,
     platforms,
     bonuses,
     picked_bonuses,
@@ -16,7 +18,8 @@ let player,
     ui,
     background,
     path,
-    finish
+    finish,
+    start_time
 
 let w = window.innerWidth,
     h = window.innerHeight,
@@ -31,16 +34,15 @@ function create () {
   background = this.add.tileSprite(0, 0, w + 1, h, 'background')
   background.scrollFactorX = 0
   background.scrollFactorY = 0
-
-// 
   Phaser.Display.Align.In.BottomCenter (background, display)
   background.tilePositionY += 300
 
-  // console.log(background)
   picked_bonuses = []
   
   initMap(this)
-  player = initPlayer(this)
+  man = initMan(this)
+  woman = initWoman(this)
+
   initControl(this)
   ui = initUI(this)
   initCamera(this)
@@ -50,16 +52,26 @@ function create () {
   debug_label = this.add.text(10, 100, '', { font: '20px Arial', fill: '#bbb' })
   debug_label.scrollFactorX = 0
 
-  this.physics.add.collider(player.sprite, platforms)
-  this.physics.add.overlap(player.sprite, finish, finishing, null, this)
-  this.physics.add.overlap(player.sprite, bonuses, get_bonus, null, this)
 
-  game_start() // !!!
+  this.physics.add.collider(man.sprite, platforms)
+  this.physics.add.overlap(man.sprite, finish, finishing, null, this)
+  this.physics.add.overlap(man.sprite, bonuses, get_bonus, null, this)
+
+  this.physics.add.collider(woman.sprite, platforms)
+  this.physics.add.overlap(woman.sprite, finish, finishing, null, this)
+  this.physics.add.overlap(woman.sprite, bonuses, get_bonus, null, this)
+
+  // game_start() // !!!
 }
 
 
 
 const game_start = (player_type) => {
+  // if (player_type == 'man')
+    player = man
+  if (player_type == 'woman')
+    player = woman
+
   state.current_state = states.game
   
   showUI(ui)
@@ -78,6 +90,8 @@ const game_start = (player_type) => {
     b.refreshBody()
   }
   picked_bonuses = []
+
+  start_time = new Date()
 }
 
 
@@ -355,8 +369,41 @@ const initMap = (scene) => {
 }
 
 
-const initPlayer = (scene) => {  
-  var anim_config = {
+const initMan = (scene) => {  
+  let anim_config = {
+    key: 'run',
+    frames: scene.anims.generateFrameNumbers('man_run', { start: 0, end: 13, first: 0 }),
+    frameRate: 35,
+    repeat: -1
+  }
+  scene.anims.create(anim_config);
+
+  let pl = new Player({
+    type: 'men',
+    sprite: scene.physics.add.sprite(0, 0, 'man_run', 13).setScale(0.3, 0.3)
+  })
+
+  pl.sprite.x = pl.start_pos.x
+  pl.sprite.y = pl.start_pos.y
+  pl.sprite.visible = false
+  pl.spawn_place = pl.start_pos
+  pl.sprite.anims.play('run')
+
+  // console.log(player.sprite)
+
+  pl.sprite.setBounce(0)
+  let plw = pl.sprite.body.width,
+      plh = pl.sprite.body.height
+
+
+  pl.sprite.setSize(140, 240)
+  pl.sprite.setOrigin(1.0, 0.9)
+
+  return pl
+}
+
+const initWoman = (scene) => {  
+  let anim_config = {
     key: 'run',
     frames: scene.anims.generateFrameNumbers('man_run', { start: 0, end: 13, first: 0 }),
     frameRate: 35,
@@ -437,21 +484,23 @@ const finish_game = () => {
 }
 
 
-
 ///////////////////////////////////////////////////
 function update () {
-  // debug_label.setText(h - player.sprite.y)
 
-  if (state.current_state == states.start_menu) {
-    player.sprite.anims.pause()
-  }
+  // if (state.current_state == states.start_menu) {
+  //   player.sprite.anims.pause()
+  // }
 
   if (state.current_state == states.game) {
     let player_anim = player.sprite.anims,
         player_body = player.sprite.body
 
-    // debug_label.setText(player_anim.currentFrame.index)
-    // debug_label.setText(player.sprite.body.velocity.x)
+    let t = timer(ui, start_time)
+    if (t <= 0) {
+      finish_game()
+      console.log('Time is out')
+    }
+    // debug_label.setText(Math.floor(res/60) + ' : ' + res%60)
     
     background.tilePositionX += player_body.velocity.x/200
     
@@ -489,8 +538,7 @@ function update () {
       dieing()
 
       // debug_label.setText(state.current_state)
-      // console.log(state.current_state)
-      
+      // console.log(state.current_state)      
     }
   }
 

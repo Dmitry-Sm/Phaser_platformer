@@ -28,9 +28,7 @@ $(document).ready(()=>{
   }
 
   var game = new Phaser.Game(config)
-  //  animateStartScreen("startAnim")
-  //  create()
-  //  game_start()
+  animateStartScreen("startAnim")
 })
 
 animateFinalScreen("init");

@@ -13,10 +13,10 @@ function preload () {
   this.load.spritesheet('bonus', 'game/bonus.png', { frameWidth: 213, frameHeight: 222.4, endFrame: 34 })
 
   this.load.image('man', 'game/man.png')
-  this.load.image('man_foto', 'game/man_foto.png')
+  // this.load.image('man_foto', 'game/man_foto.png')
   this.load.image('woman', 'game/woman.png')
-  this.load.image('woman_foto', 'game/woman_foto.png')
-  this.load.image('alarm_clock', 'game/alarm_clock.png')
+  // this.load.image('woman_foto', 'game/woman_foto.png')
+  // this.load.image('alarm_clock', 'game/alarm_clock.png')
   this.load.image('cloud', 'game/cloud.png')
   this.load.image('ground_1', 'game/ground_1.png')
   this.load.image('ground_2', 'game/ground_2.png')
