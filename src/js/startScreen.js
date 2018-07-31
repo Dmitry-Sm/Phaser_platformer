@@ -106,23 +106,23 @@ function animateStartScreen(isStatus) {
         isAnimStartScreen[0] = isAnimStartScreen[1] = false;
         isAnimStartScreen[2] = true;
         setTimeout(function(){
-          game_start('man')
+          game_start('boy')
         },1000);
       }
     });
     // кнопка персонажа 2
-    // btnPlayer2.addEventListener('touchend', function () {
-    //   if (canClick) {
-    //     scaleElem(ikons2, 1.15);
-    //     canClick = false;
-    //     frames = -10;
-    //     isAnimStartScreen[0] = isAnimStartScreen[1] = false;
-    //     isAnimStartScreen[2] = true;
-    //     setTimeout(function(){
-    //       game_start('woman')
-    //     },1000);
-    //   }
-    // });
+    btnPlayer2.addEventListener('touchend', function () {
+      if (canClick) {
+        scaleElem(ikons2, 1.15);
+        canClick = false;
+        frames = -10;
+        isAnimStartScreen[0] = isAnimStartScreen[1] = false;
+        isAnimStartScreen[2] = true;
+        setTimeout(function(){
+          game_start('girl')
+        },1000);
+      }
+    });
   }
   if (isStatus == "startAnim") {
     isAnimStartScreen[0] = true;

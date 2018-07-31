@@ -23,7 +23,7 @@
     height: 1000px;
     position: absolute;
     left: 50%;
-    top: 45%;
+    top: 48%;
     transform: translate3d(-50%, -50%, 0px);
 }
 
@@ -257,4 +257,21 @@
     align-items: center;
     justify-content: center;
     font-size: 190%;
+}
+
+@media all and (min-height: 600px) {
+    .kubok-im {
+        transform: scale(0.52);
+    }
+}
+
+@media all and (min-height: 680px) {
+    .kubok-im {
+        transform: scale(0.6);
+    }
+}
+@media all and (min-height: 750px) {
+    .kubok-im {
+        transform: scale(0.68);
+    }
 }

@@ -9,6 +9,7 @@ const initUI = (scene) => {
     return el
   }
 
+
   let h1 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
   let h2 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
   let h3 = scene.add.sprite(0, 0, 'heart').setScale(0.42)
@@ -39,6 +40,9 @@ const initUI = (scene) => {
     power_label
   }
 
+  // console.log(timer)
+  
+
   Phaser.Display.Align.In.TopLeft(addElement(h1), display)
   Phaser.Display.Align.In.TopLeft(addElement(h2), display)
   Phaser.Display.Align.In.TopLeft(addElement(h3), display)
@@ -58,6 +62,11 @@ const initUI = (scene) => {
   power_label.x -= 30
   power_label.y += 10
 
+
+  // let hole = scene.add.sprite(40, 250, 'hole').setScale(2).setOrigin(0.5, 0.5)
+  // addElement(hole)
+
+
   return ui
 }
 
@@ -66,7 +75,7 @@ const timer = (ui, start_time) => {
   let cur_time = new Date()
 
   let time = Math.floor(90 + (start_time - cur_time)/1000)
-  
+
   if (time%60 < 10)
     ui.timer.setText(Math.floor(time/60) + ' : 0' + time%60)
   else
