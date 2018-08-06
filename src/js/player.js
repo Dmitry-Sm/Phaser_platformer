@@ -2,6 +2,7 @@ class Player {
 
   constructor(params) {
     this.sprite = params.sprite
+    this.type = ''
     this.start_speed = 200
     this.min_speed = 120
     this.max_speed = 400
@@ -11,7 +12,7 @@ class Player {
     this.spawn_place = {x: 0, y: 100}
     this.start_pos = {
       x: 200,
-      y: 200
+      y: 0
     }
   }
 

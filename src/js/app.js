@@ -10,10 +10,17 @@ import {animateStartScreen} from './startScreen'
 
 
 $(document).ready(()=>{
+  console.log('!', window.devicePixelRatio)
   var config = {
     type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.screen.width,
+    height: window.screen.height,
+    autoResize: true,
+    antialias: true,
+    // pixelArt: true,
+    // zoom: 5,
+    resolution: 1,
+    roundPixels: false,
     physics: {
         default: 'arcade',
         arcade: {
@@ -28,15 +35,8 @@ $(document).ready(()=>{
   }
 
   var game = new Phaser.Game(config)
-//   animateStartScreen("startAnim")
+  
 })
 
 animateFinalScreen("init");
 animateStartScreen("init");
-
-// const risezeWindow = (event) => {
-//   console.log(event)
-  
-// }
-// window.addEventListener("resize", risezeWindow)
-

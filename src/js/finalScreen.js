@@ -1,4 +1,5 @@
 import {animateStartScreen} from './startScreen'
+import { SSL_OP_LEGACY_SERVER_CONNECT } from 'constants';
 
 
 var event = document.createEvent('Event');
@@ -56,7 +57,7 @@ var isScore = 0;
 
 function animateFinalScreen(isStatus, score) {
   if (isStatus == "init") {
-    finalScreen.style.display="none";
+    // finalScreen.style.display="none";
     btnSelfy.addEventListener('touchstart', function (e) {
       if (canClick) {
         e.currentTarget.style['background-color'] = "rgba(250, 222, 81, 0.9)";
@@ -68,6 +69,7 @@ function animateFinalScreen(isStatus, score) {
         /*canClick = false;
         frames = 0;
         isAnimFinalScreen[1] = true;*/
+        window.open('shazam://openzap?zid=6Rim1c\&campaign=abc','_blank');
       }
     });
    btnReplay.addEventListener('touchstart', function (e) {
@@ -85,7 +87,7 @@ function animateFinalScreen(isStatus, score) {
         isAnimFinalScreen[1] = true;
       }
     });
-    kubokIm.style["background-position"] = "-2px -2px";
+    //ubokIm.style["background-position"] = "-2px -2px";
   }
   if (isStatus == "startAnim") {
     finalScreen.style.display="block";
@@ -98,11 +100,20 @@ function animateFinalScreen(isStatus, score) {
 }
 
 function animKubok(obj) {
-  var nowX = obj.style["background-position"].split("px");
-  nowX = +nowX[0];
+  var pos = obj.style["background-position"].split("px");
+  let nowX = + pos[0];
+  let nowY = + pos[1].trim();
   nowX -= 290;
-  if (nowX <= -7902) nowX = -2;
-  obj.style["background-position"] = nowX + "px -2px";
+  if (nowX <= -2005) {
+    // if (nowX <= -7902) {
+    nowX = -2
+    nowY -= 513
+    if (nowY < -2000)
+      nowY = -2
+  }
+  // console.log(nowY);
+  
+  obj.style["background-position"] = nowX + "px " + nowY + "px";
 }
 
 var fps = 30;
@@ -124,7 +135,7 @@ function logicEndGame() {
     var time_el = (then - first) / 1000;
     if (isAnimFinalScreen[0]) {
       frames++;
-      animKubok(document.getElementById('kubokIm'));
+      // animKubok(document.getElementById('kubokIm'));
       if (!isAnimFinalScreen[1]) {
         if (frames == 2) {
           blackPl.setAttribute('class', 'black-cont ease-in1');

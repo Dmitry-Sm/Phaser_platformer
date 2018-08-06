@@ -1,6 +1,6 @@
 import {Player} from './player'
 import {state, states} from './states'
-import {initUI, timer, showUI, hideUI} from './ui'
+import {initUI, timer, showUI, hideUI, showTutorial, hideTutorial} from './ui'
 import { Block } from './block';
 import {animateFinalScreen} from './finalScreen'
 
@@ -22,23 +22,34 @@ let player,
     background,
     path,
     finish,
-    start_time
+    start_time,
+    tutorial_frame,
+    showed_tutorial = false
+
+let prev_state = ''
 
 let w = window.innerWidth,
     h = window.innerHeight,
     wquat = w/3
 
-
+// scaleMode for player !! ScaleModes.NEAREST
  
 function create () {
 
   display = this.add.zone(w/2, h/2, w, h)
+  background = this.add.tileSprite(0, 0, w, 1137, 'background').setScale()
+  // background.height = h
+  // background.displayHeight = h
+  background.setOrigin(0.5, 0.4)
+  // background.tileScale = new Phaser.Point(1, 1)
+  // background.setPosition(0, 300, 300, 300)
 
-  background = this.add.tileSprite(0, 0, w + 1, h, 'background')
+  // background.setY(1000).update()
   background.scrollFactorX = 0
   background.scrollFactorY = 0
-  Phaser.Display.Align.In.BottomCenter (background, display)
-  // background.tilePositionY += 300
+  Phaser.Display.Align.In.Center (background, display)
+  // background.tilePositionY += 100 // плохо
+  console.log(h);
 
   picked_bonuses = []
   
@@ -53,6 +64,7 @@ function create () {
   boy = initBoy(this)
   girl = initGirl(this)
 
+  
   initControl(this)
   ui = initUI(this)
   initCamera(this)
@@ -63,7 +75,7 @@ function create () {
   debug_label = this.add.text(10, 100, '', { font: '20px Arial', fill: '#bbb' })
   debug_label.scrollFactorX = 0
 
-
+ 
   this.physics.add.collider(boy.sprite, platforms)
   this.physics.add.overlap(boy.sprite, finish, finishing, null, this)
   this.physics.add.overlap(boy.sprite, bonuses, get_bonus, null, this)
@@ -72,9 +84,53 @@ function create () {
   this.physics.add.overlap(girl.sprite, finish, finishing, null, this)
   this.physics.add.overlap(girl.sprite, bonuses, get_bonus, null, this)
 
-  game_start('girl') // !!!
+  console.log('create');
+  
+  // game_start('girl') // !!!
 }
 
+const tutorial_timer = () => {
+  setTimeout(() => {
+    showTutorial(ui, player.type, ++tutorial_frame)
+    if (tutorial_frame < 4) {
+      tutorial_timer()
+    }
+  }, 2000)
+}
+
+
+const game_tutorial = (player_type) => {
+  if (player_type == 'boy')
+    player = boy
+  if (player_type == 'girl')
+    player = girl
+
+  showUI(ui)
+  bonus_num = 0
+  ui.power_label.setText(bonus_num)
+  player.sprite.visible = true
+  player.sprite.body.velocity.x = 0
+  player.start_pos.y = h - 433*0.3 - player.sprite.height
+  player.spawn_place = player.start_pos
+  player.sprite.x = player.start_pos.x
+  player.sprite.y = player.start_pos.y
+  camera.scrollX = player.sprite.x - wquat
+
+  if (!showed_tutorial) {
+    player.sprite.anims.pause()
+    showed_tutorial = true
+    tutorial_frame = 0
+    showTutorial(ui, player.type, tutorial_frame)
+    tutorial_timer()
+    state.current_state = states.tutorial
+  }
+  else {
+    game_start(player.type)
+  }
+  start_time = new Date()
+  timer(ui, start_time)
+
+}
 
 
 const game_start = (player_type) => {
@@ -83,21 +139,9 @@ const game_start = (player_type) => {
   if (player_type == 'girl')
     player = girl
 
-  console.log(player_type)
   
-
-  player.sprite.anims.play(player.run_anim)
-  
-  
-  showUI(ui)
-  bonus_num = 0
-  ui.power_label.setText(bonus_num)
-
   player.life = 3
   player.sprite.visible = true
-  player.spawn_place = player.start_pos
-  player.sprite.x = player.start_pos.x
-  player.sprite.y = player.start_pos.y
   player.speed = player.start_speed
 
   for (let b of picked_bonuses) {
@@ -108,6 +152,7 @@ const game_start = (player_type) => {
 
   start_time = new Date()
   state.current_state = states.game
+  // player.sprite.anims.play(player.run_anim)
 
 }
 
@@ -129,7 +174,7 @@ const get_bonus = (p, bonus_sprite) => {
   picked_bonuses.push(bonus_sprite)
   // player.sprite.visible = true
 
-  player.speed += 60
+  player.speed += 40
   player.spawn_place = {
     x: player.sprite.x,
     y: player.sprite.y
@@ -306,7 +351,7 @@ const initMap = (scene) => {
     let width = p.width * platform_types[type].scale.x,
         height = p.height * platform_types[type].scale.y
     
-    console.log(p.height)
+    // console.log(p.height)
     
     
     if (params.bonus) {
@@ -315,7 +360,7 @@ const initMap = (scene) => {
 
 
     if (!params.alternate)
-      path.length += width - 2
+      path.length += width - 1
     p.y = y
     p.refreshBody()
     return p
@@ -374,111 +419,122 @@ const initMap = (scene) => {
       h3 = 150 + 80 * 2,
       h4 = 150 + 80 * 3
 
-  // addArea(0)
-  // addArea(1)
-  // addPlatform(1)
-  // addPlatform(0)
-  // path.length += 0
-  // addPlatform(1)
-  // addPlatform('ground_2')
-  // addPlatform('ground_2')
-  // addPlatform('ground_2')
-  // addDecoration(6, {y: platform_types[2].height * platform_types[2].scale.y})
-  // addPlatform(2)
-  // addPlatform(2)
-  // addDecoration(8, {y: platform_types[2].height * platform_types[2].scale.y})
-  // addPlatform(2)
-  // addPlatform('ground_3')
 
+  // addDecoration('bush_1', {y: platform_types['plane_m_3'].height * platform_types['plane_m_3'].scale.y - 10})
+  // addDecoration('tree_1', {y: platform_types['plane_m_1'].height * platform_types['plane_m_1'].scale.y})
+  // addDecoration('tree_2', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y})
+  // addPlatform('tree_plane', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y + 75, x: 105, alternate: true, bonus: true})
+
+  addPlatform('long_plane')
   addPlatform('plane_s_1')
-  addPlatform('plane_s_2')
-  addPlatform('plane_s_3')
   addDecoration('tree_1', {y: platform_types['plane_m_1'].height * platform_types['plane_m_1'].scale.y})
   addPlatform('plane_m_1')
+  addPlatform('plane_m_2', {bonus: true})
+  path.length += l2  
+
+  // path.length += 100
+
+  addPlatform('plane_b_3')
+  addDecoration('tree_2', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y})
+  addPlatform('tree_plane', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y + 75, x: 105, alternate: true, bonus: true})
+  addPlatform('plane_b_3')
+  addPlatform('plane_s_2', {y: h3 + 50, x: 120, alternate: true})
+  addPlatform('plane_m_3')
+  addDecoration('bush_1', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y - 10})
+  addPlatform('plane_b_3', {bonus: true})
+  addPlatform('plane_s_2', {y: h3 + 50, x: -50, bonus: true, alternate: true})
+  addPlatform('plane_m_3')
+  addPlatform('plane_s_2', {y: h4, x: -30, bonus: true, alternate: true})
+  path.length += l2  
+  addPlatform('plane_m_1')
+  addPlatform('plane_m_1')
+  addDecoration('tree_1', {y: platform_types['plane_m_1'].height * platform_types['plane_m_1'].scale.y - 10})
+  addPlatform('plane_m_1')
+  addPlatform('plane_b_3')
+  addDecoration('bush_1', {y: platform_types['plane_s_2'].height * platform_types['plane_s_2'].scale.y - 10})
+  addPlatform('plane_s_2')
+  addPlatform('plane_s_2', {bonus: true})
+  path.length += l3
+  
+
+  addPlatform('plane_s_2')
+  addPlatform('plane_m_1')
+  addDecoration('tree_2', {y: platform_types['plane_m_3'].height * platform_types['plane_m_3'].scale.y})
+  addPlatform('tree_plane', {y: platform_types['plane_m_3'].height * platform_types['plane_m_3'].scale.y + 75, x: 105, alternate: true, bonus: true})
+  
+  addPlatform('plane_m_3')
+  addPlatform('plane_m_1', {y: -0.1})
+  addPlatform('plane_s_2', {y: h3 + 30, x: -50, alternate: true})
+  path.length += l2
+  addDecoration('bush_1', {y: platform_types['plane_m_2'].height * platform_types['plane_m_2'].scale.y - 10})
+  addPlatform('plane_m_2')
+  
+  addPlatform('plane_b_3')
+  addDecoration('tree_1', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y})
+  addDecoration('bush_1', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y - 10})
+  addPlatform('plane_b_3')
+  addPlatform('plane_m_1')
+  addPlatform('plane_m_2', {y: -0.1, bonus: true})
+  path.length += l2
+  addPlatform('plane_s_2', {alternate: true, alternate: true})
+  addPlatform('plane_s_3', {y: h2, x: 0})
+  // path.length += l1
+  
+  addDecoration('bush_1', {y: platform_types['plane_s_3'].height * platform_types['plane_s_3'].scale.y - 10})
+  addPlatform('plane_s_1')
+  addPlatform('plane_s_3', {y: h3, x: 20, bonus: true, alternate: true})
+  addPlatform('plane_m_3', {bonus: true})
+  path.length += l2
+  addDecoration('tree_2', {y: platform_types['plane_m_2'].height * platform_types['plane_m_2'].scale.y})
+  addPlatform('tree_plane', {y: platform_types['plane_m_2'].height * platform_types['plane_m_2'].scale.y + 75, x: 105, alternate: true, bonus: true})
+  
   addPlatform('plane_m_2')
   addDecoration('bush_1', {y: platform_types['plane_m_3'].height * platform_types['plane_m_3'].scale.y - 10})
   addPlatform('plane_m_3')
   addPlatform('plane_b_3')
-  
   addDecoration('tree_2', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y})
   addPlatform('tree_plane', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y + 75, x: 105, alternate: true, bonus: true})
   addPlatform('plane_b_3')
+
+
+  path.length += l2
+  addDecoration('bush_1', {y: platform_types['plane_m_3'].height * platform_types['plane_m_3'].scale.y - 10})
+  addPlatform('plane_m_3')
+
+  path.length += l2  
+  addPlatform('plane_s_3', {y: h1})
+  path.length += l3  
+  addPlatform('plane_s_2', {y: h2, x: -20, bonus: true})
+  path.length += l2
+  addPlatform('plane_s_3', {y: h3, x: 50, alternate: true})
+  addPlatform('plane_s_3')
+
+  addPlatform('plane_m_3')
+  addPlatform('plane_s_3', {y: h4, x: -50, bonus: true, alternate: true})
+  addDecoration('bush_1', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y - 10})
   addPlatform('plane_b_3')
+  addPlatform('plane_m_3')
   addPlatform('plane_b_3')
+  addDecoration('tree_2', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y})
+  addPlatform('tree_plane', {y: platform_types['plane_b_3'].height * platform_types['plane_b_3'].scale.y + 75, x: 105, alternate: true, bonus: true})
   addPlatform('plane_b_3')
-  addPlatform('plane_b_3')
-  // addPlatform(2)
-  // addPlatform(2)
-  // addDecoration(8, {y: platform_types[2].height * platform_types[2].scale.y})
-  // addPlatform(2)
-
-  // addDecoration(7, {y: platform_types[2].height * platform_types[2].scale.y})
-  // // path.length += 100
-  // addPlatform(5, {x: 100, y: platform_types[2].height * platform_types[2].scale.y + 80, alternate: true})
-  // addPlatform(2)
-//   addPlatform(0)
-//   addPlatform(0, {y: h1, bonus: true}) // 1
-//   path.length += 100
-
-
-//   // {
-//   addPlatform(0),
-//   addPlatform(0, {y: h1})
-//   path.length += l2
-
-//   addPlatform(1)
-//   addPlatform(0, {y: h2, bonus: true})
-
-//   path.length += l2
-//   addPlatform(2)
-//   addPlatform(0, {y: h3})
-//   path.length += l2
-//   // }
-
-// // {
-//   addPlatform(0, {y: h1})
-//   path.length -= l1
-//   addPlatform(0)
-//   addPlatform(1)
-//   addPlatform(2, {bonus: true})
-//   addPlatform(1)
-//   path.length -= l1
-//   addPlatform(0, {y: h3})
-//   path.length -= l1
-//   addPlatform(0, {y: h1})
-//   // }
-
-//   // {
-//   path.length += l1
-//   addPlatform(2)
-//   path.length += l1
-//   addPlatform(0, {y: 320, alternate: true})
-//   path.length -= l1
-//   addPlatform(1)
-//   path.length += l1
-//   addPlatform(0)
-//   addPlatform(0, {y: 320, alternate: true})
-//   path.length += l1
-//   addPlatform(1)
-//   addPlatform(2, {bonus: true})
-//   // }
   
-// // {
-//   path.length += l1
+  path.length += l2  
+  addPlatform('plane_s_1', {y: h3, x: 100, alternate: true})
+  addPlatform('plane_s_3')
+  addPlatform('plane_s_1', {y: h4, x: 100, bonus: true, alternate: true})
+  addDecoration('bush_1', {y: platform_types['plane_m_2'].height * platform_types['plane_m_2'].scale.y - 10})
 
-//   addPlatform(0, {y: h3})
-//   path.length -= l2
-//   addPlatform(0)
-//   addPlatform(0)
-//   addPlatform(0)
-//   addPlatform(1)
-//   addPlatform(2, {bonus: true})
-//   addPlatform(1)
-
-  // }
+  addPlatform('plane_m_2')
+  addPlatform('plane_s_1', {y: h3, x: 100, alternate: true})
+  addDecoration('tree_1', {y: platform_types['plane_s_3'].height * platform_types['plane_s_3'].scale.y})
+  addPlatform('plane_s_3')
+  // addPlatform('plane_b_3')
+  // addPlatform('plane_b_3')
 
   path.length += l2
 
+  addDecoration('bush_1', {y: platform_types['plane_m_2'].height * platform_types['plane_m_2'].scale.y - 10, x: 200})
   addPlatform('plane_m_2', {bonus: true})
   addPlatform('plane_b_3')
   finish = addDecoration('school')
@@ -505,7 +561,7 @@ const initBoy = (scene) => {
   let jump_start_config = {
     key: 'boy_jump_start',
     frames: scene.anims.generateFrameNumbers('boy_jump', { start: 0, end: 15, first: 0 }),
-    frameRate: 30,
+    frameRate: 40,
     repeat: 0,
     onCompleteEvent: () => {
       console.log('! anim compl')      
@@ -534,10 +590,13 @@ const initBoy = (scene) => {
     sprite: scene.physics.add.sprite(0, 0, 'boy_run', 0)
   })
 
+  pl.type = 'boy'
+
   pl.sprite.x = pl.start_pos.x
   pl.sprite.y = pl.start_pos.y
   pl.sprite.visible = false
   pl.spawn_place = pl.start_pos
+  // pl.sprite.body.velocity.y += 10000
 
 
   pl.run_anim = 'boy_run'
@@ -570,8 +629,8 @@ const initGirl = (scene) => {
 
   let jump_start_config = {
     key: 'girl_jump_start',
-    frames: scene.anims.generateFrameNumbers('girl_jump', { start: 0, end: 15, first: 0 }),
-    frameRate: 30,
+    frames: scene.anims.generateFrameNumbers('girl_jump', { start: 2, end: 15, first: 0 }),
+    frameRate: 40,
     repeat: 0,
     onCompleteEvent: () => {
       console.log('! anim compl')      
@@ -582,7 +641,7 @@ const initGirl = (scene) => {
   let jump_fly_config = {
     key: 'girl_jump_fly',
     frames: scene.anims.generateFrameNumbers('girl_jump', { start: 17, end: 28 }),
-    frameRate: 30,
+    frameRate: 35,
     repeat: -1
   }
   scene.anims.create(jump_fly_config)
@@ -600,6 +659,8 @@ const initGirl = (scene) => {
     sprite: scene.physics.add.sprite(0, 0, 'girl_run', 0)
   })
 
+  pl.type = 'girl'
+
   pl.sprite.x = pl.start_pos.x
   pl.sprite.y = pl.start_pos.y
   pl.sprite.visible = false
@@ -610,10 +671,10 @@ const initGirl = (scene) => {
   pl.jump_fly_anim = 'girl_jump_fly'
   pl.jump_fall_anim = 'girl_jump_fall'
 
-  // pl.sprite.anims.play('girl_run')
+  pl.sprite.anims.play('girl_run')
 
-  console.log(scene.anims)
-
+  console.log(pl.sprite)
+  // pl.sprite.scaleMode = Phaser.ScaleModes.NEAREST
 
   pl.sprite.setBounce(0)
   let plw = pl.sprite.body.width,
@@ -657,7 +718,7 @@ const initAnims = (scene) => {
 
 const initCamera = (scene) => {
   camera = scene.cameras.main
-  // camera.zoom = 0.8
+  // camera.zoom = 2
   // camera.scrollX += 1500
 
   // camera.startFollow(target [, roundPixels] [, lerpX] [, lerpY] [, offsetX] [, offsetY])
@@ -668,6 +729,13 @@ const initCamera = (scene) => {
 const initControl = (scene) => {
   controle = scene.input.keyboard.createCursorKeys()
   scene.input.on('pointerdown', function (pointer) {
+    if (state.current_state == states.tutorial) {
+      if (tutorial_frame == 4) {
+        hideTutorial(ui)
+        game_start(player.type)
+        return
+      }
+    }
     if (state.current_state == states.game) {
       // player.sprite.anims.pause()
       // player.sprite.anims.pause()
@@ -694,7 +762,8 @@ const initControl = (scene) => {
 
 
 const dieing = () => {
-  console.log (player.life)
+  console.log (timer(ui, start_time))
+  
   ui.hearts[--player.life].visible = false
   if (player.life > 0) {
 
@@ -703,7 +772,7 @@ const dieing = () => {
     player.speed = 10
     setTimeout(function(){
       player.speed = player.start_speed
-    }, 200)
+    }, 1000)
   }
   else {
     finish_game()
@@ -713,7 +782,8 @@ const dieing = () => {
 
 const finish_game = () => {
   state.current_state = states.start_menu
-  animateFinalScreen("setScore", bonus_num*40)
+  animateFinalScreen("setScore", bonus_num*10 + player.life * 40) //  + (90 - timer(ui, start_time) * 2)
+  // >12 stars + >=2 life == 120 + 80 == 200
   animateFinalScreen("startAnim")
   hideUI(ui)
   player.sprite.x = 0
@@ -724,22 +794,24 @@ const finish_game = () => {
 
 ///////////////////////////////////////////////////
 function update () {
-
+  // background.tilePositionY += 1
+  // background.tilePositionX += 3
+  // camera.scrollX = 5500
   // if (state.current_state == states.start_menu) {
   //   player.sprite.anims.pause()
   // }
-  debug_label.setText(state.current_state + ' ' + Math.floor(player.sprite.x))
+  // debug_label.setText(state.current_state)
 
   if (state.current_state == states.game) {
     let player_anim = player.sprite.anims,
         player_body = player.sprite.body
 
     let t = timer(ui, start_time)
-    if (t <= -10000) { // (t <= 0)
+    if (t <= 0) { // (t <= 0)
       finish_game()
       console.log('Time is out')
     }
-    // debug_label.setText(Math.floor(res/60) + ' : ' + res%60)
+    // debug_label.setText(player_anim.paused)
     // debug_label.setText(player_anim.currentAnim.key + ' ' + player_anim.getProgress())
     
     background.tilePositionX += player_body.velocity.x/200
@@ -761,7 +833,7 @@ function update () {
         player_anim.currentAnim.key != player.jump_start_anim && !player.sprite.body.blocked.down) {
       player.sprite.anims.play(player.jump_fly_anim)
     }
-    if (player_anim.currentAnim.key == player.jump_fly_anim && player.sprite.body.blocked.down) {
+    if ((player_anim.currentAnim.key == player.jump_fly_anim ) && player.sprite.body.blocked.down) {
 
       jump_down.x = player.sprite.x - 5
       jump_down.y = player.sprite.y + 5
@@ -823,7 +895,27 @@ function update () {
       }
     }
   }
+
+  if (state.current_state == states.pause) {
+    if (player && player.sprite) {
+      player.sprite.body.velocity.x = 0
+    }
+  }
 }
 
 
-export {create, game_start, update}
+
+const risezeWindow = (event) => {
+  if ( state.current_state != states.pause && event.target.innerWidth > innerHeight) {
+    prev_state = state.current_state
+    state.current_state = states.pause
+  }
+  else {
+      state.current_state = prev_state
+  }
+}
+window.addEventListener("resize", risezeWindow)
+
+
+
+export {create, game_tutorial, game_start, update}

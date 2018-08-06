@@ -1,3 +1,6 @@
+import {animateStartScreen} from './startScreen'
+import {animateFinalScreen} from './finalScreen'
+import {create, game_start, update} from './loop'
 
 function preload () {
   this.load.setBaseURL('assets/textures/')
@@ -25,13 +28,12 @@ function preload () {
   // this.load.image('woman', 'game/woman.png')
   // this.load.image('woman_foto', 'game/woman_foto.png')
   // this.load.image('alarm_clock', 'game/alarm_clock.png')
-  this.load.image('hole', 'game/hole.svg')
-  this.load.image('ground_1', 'game/ground_1.png')
-  this.load.image('ground_2', 'game/ground_2.png')
-  this.load.image('ground_3', 'game/ground_3.png')
-  this.load.image('ground_long', 'game/ground_long.png')
+  // this.load.image('ground_1', 'game/ground_1.png')
+  // this.load.image('ground_2', 'game/ground_2.png')
+  // this.load.image('ground_3', 'game/ground_3.png')
+  // this.load.image('ground_long', 'game/ground_long.png')
   this.load.image('heart', 'game/heart.png')
-  this.load.image('light', 'game/light.png')
+  // this.load.image('light', 'game/light.png')
   this.load.image('power', 'game/power.png')
   this.load.image('school', 'game/school.png')
   this.load.image('background', 'game/background.png')
@@ -39,10 +41,10 @@ function preload () {
   this.load.image('tree_1', 'game/decor/tree_1.png')
   this.load.image('tree_2', 'game/decor/tree_2.png')
   this.load.image('bush_1', 'game/decor/bush_1.png')
-  this.load.image('cloud_1', 'game/decor/cloud_1.png')
-  this.load.image('cloud_2', 'game/decor/cloud_2.png')
-  this.load.image('cloud_3', 'game/decor/cloud_3.png')
-  this.load.image('cloud_4', 'game/decor/cloud_4.png')
+  // this.load.image('cloud_1', 'game/decor/cloud_1.png')
+  // this.load.image('cloud_2', 'game/decor/cloud_2.png')
+  // this.load.image('cloud_3', 'game/decor/cloud_3.png')
+  // this.load.image('cloud_4', 'game/decor/cloud_4.png')
 
   this.load.image('tree_plane', 'game/planes/tree_plane.png')
   this.load.image('long_plane', 'game/planes/long_plane.png')
@@ -53,17 +55,41 @@ function preload () {
   this.load.image('plane_m_1', 'game/planes/plane_m_1.png')
   this.load.image('plane_m_2', 'game/planes/plane_m_2.png')
   this.load.image('plane_m_3', 'game/planes/plane_m_3.png')
-  this.load.image('plane_b_1', 'game/planes/plane_b_1.png')
-  this.load.image('plane_b_2', 'game/planes/plane_b_2.png')
+  // this.load.image('plane_b_1', 'game/planes/plane_b_1.png')
+  // this.load.image('plane_b_2', 'game/planes/plane_b_2.png')
   this.load.image('plane_b_3', 'game/planes/plane_b_3.png')
 
+  this.load.image('hole', 'game/hole.svg')
+  this.load.image('finger', 'game/finger.png')
+  this.load.image('b_ph_1', 'game/phrases/b_ph_1.png')
+  this.load.image('b_ph_2', 'game/phrases/b_ph_2.png')
+  this.load.image('b_ph_3', 'game/phrases/b_ph_3.png')
+  this.load.image('b_ph_4', 'game/phrases/b_ph_4.png')
+  this.load.image('b_ph_5', 'game/phrases/b_ph_5.png')
+  this.load.image('g_ph_1', 'game/phrases/g_ph_1.png')
+  this.load.image('g_ph_2', 'game/phrases/g_ph_2.png')
+  this.load.image('g_ph_3', 'game/phrases/g_ph_3.png')
+  this.load.image('g_ph_4', 'game/phrases/g_ph_4.png')
+  this.load.image('g_ph_5', 'game/phrases/g_ph_5.png')
+
+
+  this.load.on('progress', function (value) {
+    // console.log(value)
+  })
+  this.load.on('complete', function () {
+    console.log('load complete')
+    animateStartScreen("startAnim")
+    // animateFinalScreen("startAnim")
+
+    // setTimeout(() => {
+    //   game_start('girl')
+    // }, 500)
+  })
 
   // console.log(this.load)
   // this.load.image('sky', 'assets/skies/space3.png')
   // this.load.image('logo', 'assets/sprites/phaser3-logo.png')
   // this.load.spritesheet('spritesheet', 'assets/sprites/fruitnveg32wh37.png', {frameWidth: 32, frameHeight: 32})
-  
-
 }
 
 export {preload}

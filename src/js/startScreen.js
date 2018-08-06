@@ -1,4 +1,4 @@
-import {game_start} from './loop'
+import {game_start, game_tutorial} from './loop'
 
 
 function positionElem(_name, _x, _y) {
@@ -86,6 +86,7 @@ function animateStartScreen(isStatus) {
       if (canClick) {
         e.currentTarget.style['background-color'] = "rgba(255, 255, 255, 0.9)";
         e.currentTarget.style.color = "#1540B8";
+        // console.log('tsBtnPlay');
       }
     });
     btnPlay.addEventListener('touchend', function (e) {
@@ -95,6 +96,7 @@ function animateStartScreen(isStatus) {
         canClick = false;
         frames = 0;
         isAnimStartScreen[1] = true;
+        // console.log('teBtnPlay');
       }
     });
     // кнопка персонажа 1
@@ -106,7 +108,8 @@ function animateStartScreen(isStatus) {
         isAnimStartScreen[0] = isAnimStartScreen[1] = false;
         isAnimStartScreen[2] = true;
         setTimeout(function(){
-          game_start('boy')
+          // game_start('boy')
+          game_tutorial('boy')
         },1000);
       }
     });
@@ -119,7 +122,8 @@ function animateStartScreen(isStatus) {
         isAnimStartScreen[0] = isAnimStartScreen[1] = false;
         isAnimStartScreen[2] = true;
         setTimeout(function(){
-          game_start('girl')
+          // game_start('girl')
+          game_tutorial('girl')
         },1000);
       }
     });
@@ -127,6 +131,8 @@ function animateStartScreen(isStatus) {
   if (isStatus == "startAnim") {
     isAnimStartScreen[0] = true;
     startScreen.style.display="block";
+    btnPlayer1.style.display="none";
+    btnPlayer2.style.display="none";
     startPosElemStartGame();
   }
   if (isStatus == "choosePlayer") {
@@ -271,6 +277,7 @@ function logicStartGame() {
           scaleElem(ikon1, 1);
         }
         if (frames == 38) {
+          btnPlayer1.style.display="block";
           player1.setAttribute('class', 'player-ikon-cont player1 ease-in1');
           scaleElem(player1, 1);
         }
@@ -289,6 +296,7 @@ function logicStartGame() {
           scaleElem(ikon2, 1);
         }
         if (frames == 44) {
+          btnPlayer2.style.display="block";
           player2.setAttribute('class', 'player-ikon-cont player2 ease-in1');
           scaleElem(player2, 1);
         }

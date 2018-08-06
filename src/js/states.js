@@ -4,6 +4,7 @@ const states = {
   player_choosing: 'player_choosing',
   tutorial: 'tutorial',
   game: 'game',
+  pause: 'pause',
   finished: 'finished',
   finish_menu: 'finish_menu'
 }

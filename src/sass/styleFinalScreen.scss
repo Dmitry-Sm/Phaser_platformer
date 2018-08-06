@@ -31,23 +31,27 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background: url('assets/textures/finalScreen/Luchi.svg');
+    background: url('assets/textures/finalScreen/Luchi.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     transform: rotateZ(0deg);
     animation-name: rotateLushi;
-    animation-duration: 8s;
+    animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
 @keyframes rotateLushi {
     0% {
-        transform: rotateZ(0deg)
+        -webkit-transform: rotateZ(0deg);
+        -ms-transform: rotate(0deg);
+            transform: rotateZ(0deg)
     }
     100% {
-        transform: rotateZ(360deg)
+        -webkit-transform: rotateZ(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotateZ(45deg)
     }
 }
 
@@ -62,11 +66,11 @@
 }
 
 .kubok-cont {
-    width: 287px;
-    height: 511px;
+    width: 40%;
+    height: 27%;
     position: absolute;
     left: 50%;
-    top: 45%;
+    top: 51%;
     transform: translate3d(-50%, -50%, 0px);
 }
 
@@ -84,8 +88,9 @@
     position: absolute;
     background: url('assets/textures/finalScreen/kubok.png');
     background-repeat: no-repeat;
-    background-position: -2px -2px;
-    transform: scale(0.45);
+    background-position: center;
+    background-size: contain;
+    //transform: scale(0.45);
 }
 
 .btn-cont {
@@ -261,17 +266,17 @@
 
 @media all and (min-height: 600px) {
     .kubok-im {
-        transform: scale(0.52);
+        //transform: scale(0.52);
     }
 }
 
 @media all and (min-height: 680px) {
     .kubok-im {
-        transform: scale(0.6);
+        //transform: scale(0.6);
     }
 }
 @media all and (min-height: 750px) {
     .kubok-im {
-        transform: scale(0.68);
+        //transform: scale(0.68);
     }
 }

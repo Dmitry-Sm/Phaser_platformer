@@ -61,6 +61,7 @@
     left: 50%;
     top: 50%;
     transform: translate3d(-50%, -50%, 0px);
+    touch-action: none;
 }
 .clock-rot{
     width: 100%;
@@ -190,4 +191,43 @@
     position: absolute;
     left: 13%;
     top: 13%;
+}
+.rotate-device {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 1);
+    overflow: hidden;
+    -webkit-touch-callout: none;
+}
+
+.rotate-devoce-img {
+    position: absolute;
+    background: url('assets/textures/startScreen/rotate-device.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 50%;
+    height: 60%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: hidden;
+}
+
+@media screen and (orientation:portrait) { 
+    .rotate-device {
+        display: none;
+    }
+}
+@media screen and (orientation:landscape) { 
+    .rotate-device {
+        display: block;
+    }
 }
