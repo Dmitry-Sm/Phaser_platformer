@@ -1,4 +1,5 @@
 import {game_start, game_tutorial} from './loop'
+import {sound} from './sound'
 
 
 function positionElem(_name, _x, _y) {
@@ -82,6 +83,7 @@ var playerIkon2 = bindElem('playerIkon2');
 
 function animateStartScreen(isStatus) {
   if (isStatus == "init") {
+
     btnPlay.addEventListener('touchstart', function (e) {
       if (canClick) {
         e.currentTarget.style['background-color'] = "rgba(255, 255, 255, 0.9)";
@@ -96,7 +98,10 @@ function animateStartScreen(isStatus) {
         canClick = false;
         frames = 0;
         isAnimStartScreen[1] = true;
-        // console.log('teBtnPlay');
+        console.log('teBtnPlay')
+        sound.clock.stop()
+
+        sound.choose_hero.play()
       }
     });
     // кнопка персонажа 1
@@ -134,6 +139,7 @@ function animateStartScreen(isStatus) {
     btnPlayer1.style.display="none";
     btnPlayer2.style.display="none";
     startPosElemStartGame();
+    
   }
   if (isStatus == "choosePlayer") {
     startScreen.style.display="block";

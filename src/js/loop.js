@@ -1,4 +1,5 @@
 import {Player} from './player'
+import {sound, initSound} from './sound'
 import {state, states} from './states'
 import {initUI, timer, showUI, hideUI, showTutorial, hideTutorial} from './ui'
 import { Block } from './block';
@@ -49,7 +50,7 @@ function create () {
   background.scrollFactorY = 0
   Phaser.Display.Align.In.Center (background, display)
   // background.tilePositionY += 100 // плохо
-  console.log(h);
+  // console.log(h);
 
   picked_bonuses = []
   
@@ -84,18 +85,33 @@ function create () {
   this.physics.add.overlap(girl.sprite, finish, finishing, null, this)
   this.physics.add.overlap(girl.sprite, bonuses, get_bonus, null, this)
 
-  console.log('create');
-  
+  initSound(this)
+
+  sound.clock.play()
   // game_start('girl') // !!!
 }
 
 const tutorial_timer = () => {
+  let tutimer = 3000
+    
+  if (tutorial_frame == 0) {
+    sound.hi_hero.play()
+    tutimer = 6000
+  }
+  if (tutorial_frame == 1) {
+    sound.collect_energy.play()
+    tutimer = 4000
+  }
+  if (tutorial_frame == 2) {
+    sound.seconds.play()
+  }
   setTimeout(() => {
     showTutorial(ui, player.type, ++tutorial_frame)
+    // console.log(tutorial_frame)
     if (tutorial_frame < 4) {
       tutorial_timer()
     }
-  }, 2000)
+  }, tutimer)
 }
 
 
@@ -166,6 +182,8 @@ const finishing = (player, f_platform) => {
 
 
 const get_bonus = (p, bonus_sprite) => {
+  sound.bonus.play()
+
   ui.power_label.setText(++bonus_num)
   // console.log(bonus_sprite)
   
@@ -757,12 +775,12 @@ const initControl = (scene) => {
         jump_up.anims.play('jump_up')
       }
     }
-  }, this)  
+  }, this)
 }
 
 
 const dieing = () => {
-  console.log (timer(ui, start_time))
+  sound.fall_down.play()
   
   ui.hearts[--player.life].visible = false
   if (player.life > 0) {
