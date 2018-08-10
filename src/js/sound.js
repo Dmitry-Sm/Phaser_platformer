@@ -11,6 +11,7 @@ const initSound = (scene) => {
     bonus: scene.sound.add('bonus collect'),
     collect_energy: scene.sound.add('collect energy'),
     clock: scene.sound.add('clock'),
+    run_and_jump: scene.sound.add('run and jump'),
     fall_down: scene.sound.add('fall down')
   }
 

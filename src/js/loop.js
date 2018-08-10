@@ -34,7 +34,7 @@ let w = window.innerWidth,
     wquat = w/3
 
 // scaleMode for player !! ScaleModes.NEAREST
- 
+
 function create () {
 
   display = this.add.zone(w/2, h/2, w, h)
@@ -104,12 +104,16 @@ const tutorial_timer = () => {
   }
   if (tutorial_frame == 2) {
     sound.seconds.play()
+    tutimer = 3000
   }
   setTimeout(() => {
     showTutorial(ui, player.type, ++tutorial_frame)
     // console.log(tutorial_frame)
     if (tutorial_frame < 4) {
       tutorial_timer()
+    }
+    if (tutorial_frame == 4) {
+      sound.run_and_jump.play()
     }
   }, tutimer)
 }
@@ -201,6 +205,8 @@ const get_bonus = (p, bonus_sprite) => {
   boost.x = player.sprite.x
   boost.y = player.sprite.y - 15
   boost.anims.play('boost')
+  yaCounter49926508.reachGoal('collected_lightning')
+
 }
 
 
@@ -755,17 +761,9 @@ const initControl = (scene) => {
       }
     }
     if (state.current_state == states.game) {
-      // player.sprite.anims.pause()
-      // player.sprite.anims.pause()
-      // if (player.sprite.anims.currentAnim.key == 'run')
-      //   player.sprite.anims.play('run2')
-      // else
-      //   player.sprite.anims.play('run')
+      yaCounter49926508.reachGoal('click_screen')
 
-
-      // console.log(player.sprite.anims.currentAnim)
-      if (player.sprite.body.blocked.down) {
-        
+      if (player.sprite.body.blocked.down) {        
         player.jump()
         player.sprite.anims.pause()
         player.sprite.anims.play(player.jump_start_anim)
@@ -781,6 +779,7 @@ const initControl = (scene) => {
 
 const dieing = () => {
   sound.fall_down.play()
+  yaCounter49926508.reachGoal('minus_one_life')  
   
   ui.hearts[--player.life].visible = false
   if (player.life > 0) {
@@ -793,32 +792,29 @@ const dieing = () => {
     }, 1000)
   }
   else {
-    finish_game()
+    finish_game('lose')
   }
 }
 
 
-const finish_game = () => {
+const finish_game = (result) => {
   state.current_state = states.start_menu
   animateFinalScreen("setScore", bonus_num*10 + player.life * 40) //  + (90 - timer(ui, start_time) * 2)
   // >12 stars + >=2 life == 120 + 80 == 200
-  animateFinalScreen("startAnim")
+  animateFinalScreen("startAnim", 0, result)
   hideUI(ui)
   player.sprite.x = 0
   player.sprite.visible = false
+  if (result == 'win')
+    yaCounter49926508.reachGoal('win')  
+  if (result == 'lose')
+    yaCounter49926508.reachGoal('lost')
   // player.sprite.destroy()
 }
 
 
 ///////////////////////////////////////////////////
 function update () {
-  // background.tilePositionY += 1
-  // background.tilePositionX += 3
-  // camera.scrollX = 5500
-  // if (state.current_state == states.start_menu) {
-  //   player.sprite.anims.pause()
-  // }
-  // debug_label.setText(state.current_state)
 
   if (state.current_state == states.game) {
     let player_anim = player.sprite.anims,
@@ -826,11 +822,9 @@ function update () {
 
     let t = timer(ui, start_time)
     if (t <= 0) { // (t <= 0)
-      finish_game()
+      finish_game('lose')
       console.log('Time is out')
     }
-    // debug_label.setText(player_anim.paused)
-    // debug_label.setText(player_anim.currentAnim.key + ' ' + player_anim.getProgress())
     
     background.tilePositionX += player_body.velocity.x/200
 
@@ -859,33 +853,15 @@ function update () {
 
       player.sprite.anims.play(player.run_anim)
     }
-    // if (player_anim.currentAnim.key == 'jump_fall' && player_anim.getProgress() == 1) {
-    //   player.sprite.anims.play('run')
-    // }
 
     if (player_body.blocked.right) {
       player_anim.setTimeScale(0.75)
     }
-    // else {
-    //   player_anim.setTimeScale(1 + (player.speed - player.min_speed)/1000)
-    // }
-
     camera.scrollX = player.sprite.x - wquat
     let camera_y = -(h*0.4 - player.sprite.y)
     camera.scrollY += (camera_y - camera.scrollY)/50
     if (camera.scrollY > 0)
       camera.scrollY = 0
-
-    // if (controle.up.isDown) {
-    //   if (player.sprite.body.blocked.down) {
-        
-    //     player.jump()
-
-    //     jump.x = player.sprite.x
-    //     jump.y = player.sprite.y + 4
-    //     jump.anims.play('jump')
-    //   }
-    // }
 
     if (player.sprite.y > h + 80) {
       dieing()  
@@ -905,7 +881,7 @@ function update () {
       player.sprite.body.velocity.x = 0  
       player_anim.currentFrame = player_anim.currentAnim.frames[9]
       player_anim.stop()
-      finish_game()
+      finish_game('win')
     }
     else {
       if (player_anim.currentAnim.key != player.run_anim) {

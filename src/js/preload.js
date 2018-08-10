@@ -79,11 +79,12 @@ function preload () {
   this.load.audio('collect energy', 'sound/collect energy.mp3')
   this.load.audio('fall down', 'sound/fall down.mp3')
   this.load.audio('hi, hero', 'sound/hi, hero.mp3')
+  this.load.audio('run and jump', 'sound/run and jump.mp3')
   this.load.audio('clock', 'sound/clock.mp3')
 
-  this.load.on('progress', function (value) {
-    // console.log(value)
-  })
+  // this.load.on('progress', function (value) {
+  //   // console.log(value)
+  // })
   this.load.on('complete', function () {
     console.log('load complete')
     animateStartScreen("startAnim")

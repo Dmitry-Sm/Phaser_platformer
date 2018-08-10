@@ -100,7 +100,8 @@ function animateStartScreen(isStatus) {
         isAnimStartScreen[1] = true;
         console.log('teBtnPlay')
         sound.clock.stop()
-
+        yaCounter49926508.reachGoal('play')
+        yaCounter49917808.reachGoal('game-start')
         sound.choose_hero.play()
       }
     });
@@ -115,6 +116,7 @@ function animateStartScreen(isStatus) {
         setTimeout(function(){
           // game_start('boy')
           game_tutorial('boy')
+          yaCounter49926508.reachGoal('click_boy')
         },1000);
       }
     });
@@ -129,6 +131,7 @@ function animateStartScreen(isStatus) {
         setTimeout(function(){
           // game_start('girl')
           game_tutorial('girl')
+          yaCounter49926508.reachGoal('click_girl')
         },1000);
       }
     });

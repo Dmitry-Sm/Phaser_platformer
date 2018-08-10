@@ -54,8 +54,9 @@ var lushiCont = bindElem('lushiCont');
 var btnSelfy = bindElem('btnSelfy');
 var btnReplay = bindElem('btnReplay');
 var isScore = 0;
+var game_result = 'win or lose'
 
-function animateFinalScreen(isStatus, score) {
+function animateFinalScreen(isStatus, score, game_res) {
   if (isStatus == "init") {
     // finalScreen.style.display="none";
     btnSelfy.addEventListener('touchstart', function (e) {
@@ -70,26 +71,38 @@ function animateFinalScreen(isStatus, score) {
         frames = 0;
         isAnimFinalScreen[1] = true;*/
         window.open('shazam://openzap?zid=6Rim1c\&campaign=abc','_blank');
+
+        if (game_result == 'win')
+          yaCounter49926508.reachGoal('win_button_selfi')  
+        if (game_result == 'lose')
+          yaCounter49926508.reachGoal('lost_button_selfi')
+
       }
     });
-   btnReplay.addEventListener('touchstart', function (e) {
+  btnReplay.addEventListener('touchstart', function (e) {
       if (canClick) {
         e.currentTarget.style['background-color'] = "rgba(255, 255, 255, 0.9)";
         e.currentTarget.style.color = "#1540B8";
       }
     });
-   btnReplay.addEventListener('touchend', function (e) {
+  btnReplay.addEventListener('touchend', function (e) {
       if (canClick) {
         e.currentTarget.style['background-color'] = "rgba(255, 255, 255, 0.45)";
         e.currentTarget.style.color = "white";
         canClick = false;
         frames = 0;
         isAnimFinalScreen[1] = true;
+
+        if (game_result == 'win')
+          yaCounter49926508.reachGoal('win_play_again')  
+        if (game_result == 'lose')
+          yaCounter49926508.reachGoal('lost_play_again')
       }
     });
     //ubokIm.style["background-position"] = "-2px -2px";
   }
   if (isStatus == "startAnim") {
+    game_result = game_res
     finalScreen.style.display="block";
     isAnimFinalScreen[0] = true;
     startPositionElem();

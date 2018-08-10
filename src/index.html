@@ -6,12 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter49926508 = new Ya.Metrika2({
+                        id: 49926508,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true,
+                        webvisor: true
+                    });
+                } catch (e) {}
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () {
+                    n.parentNode.insertBefore(s, n);
+                };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks2");
+    </script>
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/49926508" style="position:absolute; left:-9999px;" alt="" />
+        </div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
     <link rel="stylesheet" href="style.css">
+
 </head>
 
-<body scroll="no" >
+<body scroll="no">
     <!-- <script src="http://cdn.jsdelivr.net/npm/phaser@3.11/dist/phaser.min.js"></script> -->
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="assets/libs/phaser.min.js"></script>
     <div id="startScreen" class="screen">
         <div id="blackPlStart" class="black-cont"></div>
@@ -76,7 +115,7 @@
             <div id="txtStartScreen4" class="txt-start-screen1" style="padding-top:2px">ГЕРОЕМ ТЫ</div>
             <div id="txtStartScreen5" class="txt-start-screen1" style="padding-top:2px">ХОЧЕШЬ БЫТЬ!</div>
         </div>
-        <div id = "playerIkon1" class="ikon-player ikon-player1">
+        <div id="playerIkon1" class="ikon-player ikon-player1">
             <div id="ikons1" class="player-ikon-cont ease-in1">
                 <div id="ikon1" class="player-ikon-cont ikon1"></div>
                 <div id="player1" class="player-ikon-cont player1"></div>
@@ -85,7 +124,7 @@
             <div id="txt2ikon1" class="txt-player" style="padding-top:2px">МАЛЬЧИК</div>
             <div id="btnPlayer1" class="btn-players"></div>
         </div>
-        <div id = "playerIkon2" class="ikon-player ikon-player2">
+        <div id="playerIkon2" class="ikon-player ikon-player2">
             <div id="ikons2" class="player-ikon-cont ease-in1">
                 <div id="ikon2" class="player-ikon-cont ikon2"></div>
                 <div id="player2" class="player-ikon-cont player2"></div>
@@ -124,8 +163,8 @@
         <div id="btnReplay" class="btn-cont btn-replay">ИГРАТЬ</div>
     </div>
     <script src="app.js"></script>
-    <div class="rotate-device" scroll="no" >
-        <div class="rotate-devoce-img" scroll="no" ></div>
+    <div class="rotate-device" scroll="no">
+        <div class="rotate-devoce-img" scroll="no"></div>
     </div>
 </body>
 

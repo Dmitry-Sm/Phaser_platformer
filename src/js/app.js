@@ -10,8 +10,8 @@ import {animateStartScreen} from './startScreen'
 
 
 $(document).ready(()=>{
-  console.log('!', window.devicePixelRatio)
-  var config = {
+    console.log('!', window.devicePixelRatio)
+    var config = {
     type: Phaser.AUTO,
     width: window.screen.width,
     height: window.screen.height,
@@ -32,10 +32,10 @@ $(document).ready(()=>{
         create: create,
         update: update
     }
-  }
+    }
 
-  var game = new Phaser.Game(config)
-  
+    var game = new Phaser.Game(config)
+
 })
 
 animateFinalScreen("init");
