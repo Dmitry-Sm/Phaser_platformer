@@ -101,8 +101,9 @@ function animateStartScreen(isStatus) {
         console.log('teBtnPlay')
         sound.clock.stop()
         yaCounter49926508.reachGoal('play')
-        yaCounter49917808.reachGoal('game-start')
-        sound.choose_hero.play()
+        // yaCounter49917808.reachGoal('game-start')
+          sound.music.play()
+          sound.choose_hero.play()
       }
     });
     // кнопка персонажа 1

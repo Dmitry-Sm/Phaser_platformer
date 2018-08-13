@@ -12,8 +12,13 @@ const initSound = (scene) => {
     collect_energy: scene.sound.add('collect energy'),
     clock: scene.sound.add('clock'),
     run_and_jump: scene.sound.add('run and jump'),
+    music: scene.sound.add('music'),
+    winner_game: scene.sound.add('winner game'),
     fall_down: scene.sound.add('fall down')
   }
+
+  sound.music.loop = true
+  sound.music.volume = 0.5
 
   sound.clock.loop = true
   sound.clock.totalDuration = 0.7

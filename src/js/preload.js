@@ -81,6 +81,8 @@ function preload () {
   this.load.audio('hi, hero', 'sound/hi, hero.mp3')
   this.load.audio('run and jump', 'sound/run and jump.mp3')
   this.load.audio('clock', 'sound/clock.mp3')
+  this.load.audio('music', 'sound/music.mp3')
+  this.load.audio('winner game', 'sound/winner game.wav')
 
   // this.load.on('progress', function (value) {
   //   // console.log(value)

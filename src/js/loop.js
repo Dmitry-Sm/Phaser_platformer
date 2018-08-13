@@ -805,8 +805,11 @@ const finish_game = (result) => {
   hideUI(ui)
   player.sprite.x = 0
   player.sprite.visible = false
-  if (result == 'win')
+  if (result == 'win') {
     yaCounter49926508.reachGoal('win')  
+    sound.winner_game.play()
+    sound.music.stop()
+  }
   if (result == 'lose')
     yaCounter49926508.reachGoal('lost')
   // player.sprite.destroy()

@@ -1,3 +1,4 @@
+import {sound} from './sound'
 import {animateStartScreen} from './startScreen'
 import { SSL_OP_LEGACY_SERVER_CONNECT } from 'constants';
 
@@ -92,6 +93,7 @@ function animateFinalScreen(isStatus, score, game_res) {
         canClick = false;
         frames = 0;
         isAnimFinalScreen[1] = true;
+        sound.music.play()
 
         if (game_result == 'win')
           yaCounter49926508.reachGoal('win_play_again')  
