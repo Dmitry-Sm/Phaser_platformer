@@ -1,9 +1,10 @@
 import {Player} from './player'
-import {sound, initSound} from './sound'
+import {sound, initSound, mute, unmute} from './sound'
 import {state, states} from './states'
 import {initUI, timer, showUI, hideUI, showTutorial, hideTutorial} from './ui'
 import { Block } from './block';
 import {animateFinalScreen} from './finalScreen'
+// import {device} from './device'
 
 let player,
     boy, 
@@ -86,8 +87,30 @@ function create () {
   this.physics.add.overlap(girl.sprite, bonuses, get_bonus, null, this)
 
   initSound(this)
+  // mute()
 
+  // if(device.desktop()) alert('ПК')
+  // if(device.android()) alert('android')
+  // if(device.iphone()) alert('iphone')
+  //   mute()
+  // mute()
   sound.clock.play()
+
+  if(device.ipod()) {
+    mute()
+    console.log('ipod')
+    document.getElementById('sound-btn').classList.add('no-sound')
+  }
+  if(device.ipad()) {
+    mute()
+    console.log('ipad')
+    document.getElementById('sound-btn').classList.add('no-sound')
+  }
+  if(device.iphone()) {
+    mute()
+    console.log('iphone')
+    document.getElementById('sound-btn').classList.add('no-sound')
+  }
   // game_start('girl') // !!!
 }
 
@@ -205,7 +228,7 @@ const get_bonus = (p, bonus_sprite) => {
   boost.x = player.sprite.x
   boost.y = player.sprite.y - 15
   boost.anims.play('boost')
-  yaCounter49926508.reachGoal('collected_lightning')
+  yaCounter49913833.reachGoal('collected_lightning')
 
 }
 
@@ -635,7 +658,7 @@ const initBoy = (scene) => {
       plh = pl.sprite.body.height
 
 
-  pl.sprite.setSize(30, 60)
+  pl.sprite.setSize(30, 67)
   pl.sprite.setOrigin(0.75, 0.6)
 
   return pl
@@ -705,7 +728,7 @@ const initGirl = (scene) => {
       plh = pl.sprite.body.height
 
 
-  pl.sprite.setSize(30, 60)
+  pl.sprite.setSize(30, 67)
   pl.sprite.setOrigin(0.75, 0.65)
 
   return pl
@@ -761,7 +784,7 @@ const initControl = (scene) => {
       }
     }
     if (state.current_state == states.game) {
-      yaCounter49926508.reachGoal('click_screen')
+      yaCounter49913833.reachGoal('click_screen')
 
       if (player.sprite.body.blocked.down) {        
         player.jump()
@@ -779,7 +802,7 @@ const initControl = (scene) => {
 
 const dieing = () => {
   sound.fall_down.play()
-  yaCounter49926508.reachGoal('minus_one_life')  
+  yaCounter49913833.reachGoal('minus_one_life')  
   
   ui.hearts[--player.life].visible = false
   if (player.life > 0) {
@@ -805,13 +828,13 @@ const finish_game = (result) => {
   hideUI(ui)
   player.sprite.x = 0
   player.sprite.visible = false
+  sound.music.stop()
   if (result == 'win') {
-    yaCounter49926508.reachGoal('win')  
+    yaCounter49913833.reachGoal('win')  
     sound.winner_game.play()
-    sound.music.stop()
   }
   if (result == 'lose')
-    yaCounter49926508.reachGoal('lost')
+    yaCounter49913833.reachGoal('lost')
   // player.sprite.destroy()
 }
 
@@ -911,8 +934,22 @@ const risezeWindow = (event) => {
       state.current_state = prev_state
   }
 }
+
 window.addEventListener("resize", risezeWindow)
 
 
+const sound_click = (e) => {
+  let el = e.target
+  el.classList.toggle('no-sound')
+  if (el.classList.contains('no-sound')) {
+    mute()
+  }
+  else {
+    unmute()
+  }
+}
+
+
+document.getElementById('sound-btn').addEventListener('click', sound_click)
 
 export {create, game_tutorial, game_start, update}

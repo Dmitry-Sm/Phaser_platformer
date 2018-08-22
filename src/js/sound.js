@@ -21,9 +21,32 @@ const initSound = (scene) => {
   sound.music.volume = 0.5
 
   sound.clock.loop = true
-  sound.clock.totalDuration = 0.7
+  // sound.clock.totalDuration = 0.7
   sound.clock.volume = 0.5
+  
+  // setTimeout(() => {
+  //   for (let s in sound) {
+  //     console.log(sound[s].volume)
+  //   }
+  // }, 0)
+
+}
+
+const mute = () => {
+  sound.clock.mute = true
+  // for (let s in sound) {
+  //   // console.log(sound[s].volume);
+  //   sound[s].mute = true
+  // }
+}
+
+const unmute = () => {
+  sound.clock.mute = false
+  // for (let s in sound) {
+  //   sound[s].mute = false
+  //   // console.log(sound[s].volume);
+  // }
 }
 
 
-export {sound, initSound}
+export {sound, initSound, mute, unmute}

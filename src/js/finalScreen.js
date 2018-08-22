@@ -74,9 +74,9 @@ function animateFinalScreen(isStatus, score, game_res) {
         window.open('shazam://openzap?zid=6Rim1c\&campaign=abc','_blank');
 
         if (game_result == 'win')
-          yaCounter49926508.reachGoal('win_button_selfi')  
+          yaCounter49913833.reachGoal('win_button_selfi')  
         if (game_result == 'lose')
-          yaCounter49926508.reachGoal('lost_button_selfi')
+          yaCounter49913833.reachGoal('lost_button_selfi')
 
       }
     });
@@ -96,9 +96,9 @@ function animateFinalScreen(isStatus, score, game_res) {
         sound.music.play()
 
         if (game_result == 'win')
-          yaCounter49926508.reachGoal('win_play_again')  
+          yaCounter49913833.reachGoal('win_play_again')  
         if (game_result == 'lose')
-          yaCounter49926508.reachGoal('lost_play_again')
+          yaCounter49913833.reachGoal('lost_play_again')
       }
     });
     //ubokIm.style["background-position"] = "-2px -2px";

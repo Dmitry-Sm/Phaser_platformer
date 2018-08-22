@@ -60,7 +60,8 @@ function preload () {
   this.load.image('plane_b_3', 'textures/game/planes/plane_b_3.png')
 
   this.load.image('hole', 'textures/game/hole.svg')
-  this.load.image('finger', 'textures/game/finger.png')
+  this.load.image('finger1', 'textures/game/finger1.png')
+  this.load.image('finger2', 'textures/game/finger2.png')
   this.load.image('b_ph_1', 'textures/game/phrases/b_ph_1.png')
   this.load.image('b_ph_2', 'textures/game/phrases/b_ph_2.png')
   this.load.image('b_ph_3', 'textures/game/phrases/b_ph_3.png')
@@ -82,7 +83,7 @@ function preload () {
   this.load.audio('run and jump', 'sound/run and jump.mp3')
   this.load.audio('clock', 'sound/clock.mp3')
   this.load.audio('music', 'sound/music.mp3')
-  this.load.audio('winner game', 'sound/winner game.wav')
+  this.load.audio('winner game', 'sound/winner game.mp3')
 
   // this.load.on('progress', function (value) {
   //   // console.log(value)

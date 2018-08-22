@@ -221,6 +221,30 @@
     overflow: hidden;
 }
 
+
+.sound {
+    position: absolute;
+    width: 12%;
+    height: 10%;
+    top: 1%;
+    right: 1%;
+    
+    background: url('/assets/textures/startScreen/unmute.svg');    
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.no-sound {
+    background: url('/assets/textures/startScreen/mute.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.sound:active {
+    width: 13%;
+    height: 11%;
+}
+
 @media screen and (orientation:portrait) { 
     .rotate-device {
         display: none;

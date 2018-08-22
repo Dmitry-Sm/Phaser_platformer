@@ -58,7 +58,33 @@ const initUI = (scene) => {
     girl: []
   }
   let hole = scene.add.sprite(0, 0, 'hole').setOrigin(0.5, 0.5).setScrollFactor(0)
-  let finger = scene.add.sprite(w, h - 5, 'finger').setScale(0.25).setOrigin(1.2, 1)
+
+
+  let finger1 = scene.add.sprite(w, h - 5, 'finger1').setScale(0.25).setOrigin(1.2, 1)
+  let finger2 = scene.add.sprite(w, h - 5, 'finger2').setScale(0.25).setOrigin(1.2, 1)
+
+  let finger = {visible: false}
+  // console.log('!-- ',  finger1.texture.key)
+
+  finger1.visible = false
+  finger2.visible = false
+  var finger_anim = setInterval(() => {
+    if (!finger.visible) {
+      finger1.visible = false
+      finger2.visible = false
+      return
+    }
+
+    if (finger1.visible) {
+      finger1.visible = false
+      finger2.visible = true
+    }
+    else {
+      finger1.visible = true
+      finger2.visible = false
+    }
+  }, 500)
+
 
   let phrase_scale = 0.45
   phrases.boy.push (scene.add.sprite(120,  h - 433 * 0.3 - 50, 'b_ph_1').setScale(phrase_scale).setOrigin(-0.5, 1))

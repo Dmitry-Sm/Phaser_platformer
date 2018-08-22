@@ -10,7 +10,6 @@ import {animateStartScreen} from './startScreen'
 
 
 $(document).ready(()=>{
-    console.log('!', window.devicePixelRatio)
     var config = {
     type: Phaser.AUTO,
     width: window.screen.width,
@@ -36,7 +35,7 @@ $(document).ready(()=>{
 
     var game = new Phaser.Game(config)
 
+    animateFinalScreen("init");
+    animateStartScreen("init");
 })
 
-animateFinalScreen("init");
-animateStartScreen("init");

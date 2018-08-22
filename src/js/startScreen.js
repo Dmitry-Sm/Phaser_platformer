@@ -99,11 +99,11 @@ function animateStartScreen(isStatus) {
         frames = 0;
         isAnimStartScreen[1] = true;
         console.log('teBtnPlay')
+        $("#sound-btn").hide()
         sound.clock.stop()
-        yaCounter49926508.reachGoal('play')
-        // yaCounter49917808.reachGoal('game-start')
-          sound.music.play()
-          sound.choose_hero.play()
+        yaCounter49913833.reachGoal('play')
+        sound.music.play()
+        sound.choose_hero.play()
       }
     });
     // кнопка персонажа 1
@@ -117,7 +117,7 @@ function animateStartScreen(isStatus) {
         setTimeout(function(){
           // game_start('boy')
           game_tutorial('boy')
-          yaCounter49926508.reachGoal('click_boy')
+          yaCounter49913833.reachGoal('click_boy')
         },1000);
       }
     });
@@ -132,7 +132,7 @@ function animateStartScreen(isStatus) {
         setTimeout(function(){
           // game_start('girl')
           game_tutorial('girl')
-          yaCounter49926508.reachGoal('click_girl')
+          yaCounter49913833.reachGoal('click_girl')
         },1000);
       }
     });
